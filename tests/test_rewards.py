@@ -1,7 +1,12 @@
 """Unit tests for the GRPO reward functions — handmade completions with known rewards."""
 
 from data.gsm8k import extract_gold_answer
-from train.rewards import correctness_reward, format_reward, numeric_reward
+from train.rewards import (
+    correctness_reward,
+    format_reward,
+    numeric_reward,
+    tag_presence_reward,
+)
 
 
 def wrap(*texts):
@@ -47,11 +52,19 @@ def test_extract_gold_answer():
     assert extract_gold_answer("blah\n#### 1,234") == "1234"
 
 
+def test_tag_presence_reward_is_graded():
+    only_answer_tags = "Sure! <answer>56</answer>"
+    duplicated_tags = "<answer>1</answer><answer>2</answer>"
+    completions = wrap(PERFECT, only_answer_tags, NO_TAGS_AT_ALL, duplicated_tags)
+    assert tag_presence_reward(completions) == [0.5, 0.25, 0.0, 0.0]
+
+
 def test_total_reward_of_perfect_completion_is_max():
     gold = ["56"]
     total = (
         correctness_reward(wrap(PERFECT), gold)[0]
         + format_reward(wrap(PERFECT))[0]
         + numeric_reward(wrap(PERFECT))[0]
+        + tag_presence_reward(wrap(PERFECT))[0]
     )
-    assert total == 2.75
+    assert total == 3.25

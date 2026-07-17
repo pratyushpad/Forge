@@ -26,10 +26,20 @@ def extract_gold_answer(answer_text: str) -> str:
     return answer_text.split("####")[-1].strip().replace(",", "")
 
 
+# One-shot example turns: Qwen2.5-1.5B ignores the format instruction alone
+# (measured: 0/80 tagged completions in the first smoke run), which starves GRPO
+# of any reward signal. A worked example makes tagged completions appear at step 0.
+ONE_SHOT = [
+    {"role": "user", "content": "What is 2 + 3?"},
+    {"role": "assistant", "content": "<reasoning>\n2 + 3 = 5.\n</reasoning>\n<answer>\n5\n</answer>"},
+]
+
+
 def _to_row(example: dict) -> dict:
     return {
         "prompt": [
             {"role": "system", "content": SYSTEM_PROMPT},
+            *ONE_SHOT,
             {"role": "user", "content": example["question"]},
         ],
         "answer": extract_gold_answer(example["answer"]),
@@ -42,7 +52,10 @@ def load_gsm8k(split: str = "train") -> Dataset:
     split: "train" (7.5k, used for GRPO) or "test" (1.3k, held out for eval only).
     """
     ds = load_dataset("openai/gsm8k", "main", split=split)
-    return ds.map(_to_row)
+    # load_from_cache_file=False: the map cache fingerprints _to_row itself but not
+    # module-level globals like ONE_SHOT, so edits to the prompt would silently serve
+    # stale rows. Re-mapping 7.5k rows costs ~1s.
+    return ds.map(_to_row, load_from_cache_file=False)
 
 
 LOADERS = {"gsm8k": load_gsm8k}

@@ -9,7 +9,11 @@ Reward design (documented per the brief):
   format_reward:      +0.5  strict <reasoning>…</reasoning><answer>…</answer> structure
   numeric_reward:     +0.25 the <answer> block parses as a number (soft shaping toward
                             numeric answers before correctness is achievable)
-Max total per completion: 2.75.
+  tag_presence_reward:+0.5  graded cold-start signal: +0.125 per required tag present
+                            exactly once — added after the first smoke run measured
+                            0/80 completions with any tags (all-zero rewards = no
+                            GRPO gradient)
+Max total per completion: 3.25.
 """
 
 import re
@@ -68,4 +72,15 @@ def numeric_reward(completions, **kwargs) -> list[float]:
     ]
 
 
-REWARD_FUNCS = [correctness_reward, format_reward, numeric_reward]
+def tag_presence_reward(completions, **kwargs) -> list[float]:
+    def score(text: str) -> float:
+        return sum(
+            0.125
+            for tag in ("<reasoning>", "</reasoning>", "<answer>", "</answer>")
+            if text.count(tag) == 1
+        )
+
+    return [score(text) for text in _contents(completions)]
+
+
+REWARD_FUNCS = [correctness_reward, format_reward, numeric_reward, tag_presence_reward]
