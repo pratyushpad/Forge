@@ -1,7 +1,15 @@
 {
   "permissions": {
     "allow": [
-      "Bash(nvidia-smi)"
+      "Bash(nvidia-smi)",
+      "Bash(awk '{print $2}')",
+      "Bash(awk '{s+=$1} END {printf \"mean reward, last 50 steps: %.2f\\\\n\", s/NR}')",
+      "Bash(awk '{s+=$1} END {printf \"mean reward, first 50 steps: %.2f\\\\n\", s/NR}')",
+      "Bash(unset PYTHONPATH)",
+      "Bash(/home/praty/miniconda3/envs/forge/bin/pip install *)",
+      "Skill(dataviz)",
+      "Skill(dataviz:*)",
+      "Bash(env -u PYTHONPATH PYTHONPATH=. $HOME/miniconda3/envs/forge/bin/python -m eval.plot_training)"
     ]
   }
 }
