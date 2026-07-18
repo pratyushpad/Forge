@@ -165,20 +165,24 @@ Current posture (edge runtime proxy, live mode is OFF by default):
 - ✅ **No SSRF:** upstream URL comes from **env only** (`FORGE_FALLBACK_URL` /
   `FORGE_VLLM_URL`), never from the request body. A caller cannot redirect the proxy.
 - ✅ **No secret leakage:** `FORGE_FALLBACK_KEY` is sent as a bearer token *upstream
-  only*; it is never returned to the client. Errors return a generic message.
+  only*; it is never returned to the client. Errors return a generic message (upstream
+  failures return a generic 502, never the upstream body).
 - ✅ **Fails safe:** with no endpoint configured it returns 503 and the page falls
   back to cached outputs — the default public state.
-- ⚠️ **Hardening TODO before enabling live mode** (only relevant once you set
-  `FORGE_FALLBACK_URL` in Vercel):
-  1. **No rate limiting** — once live, this is an open, unauthenticated proxy to your
-     inference backend (cost/abuse risk). Add a rate limit or a shared secret.
-  2. **User-controlled `model`** is forwarded upstream — clamp it to an allowlist so a
-     caller can't request arbitrary models on your backend.
-  3. **`await req.json()` is unguarded** — a non-JSON body throws → 500. Wrap in
-     try/catch and return 400 on bad input.
-  4. **Only HSTS is set.** Consider adding `X-Content-Type-Options: nosniff`,
-     `X-Frame-Options: DENY` (or CSP `frame-ancestors`) via `next.config.mjs` headers
-     if embedding/clickjacking is a concern. Not critical for a static demo.
+- ✅ **Hardening applied 2026-07-18** (all four former TODOs):
+  1. **Rate limiting:** fixed-window in-memory limiter, 10 req/min per IP
+     (`x-forwarded-for`), returns 429 `{"error":"rate limit exceeded"}`. Per edge
+     isolate — enough for casual abuse; use a KV-backed limiter or shared secret if
+     live mode ever sees real traffic.
+  2. **`model` clamped to an allowlist** (`forge` + `FORGE_FALLBACK_MODEL`); anything
+     else falls back to the default — arbitrary user strings never reach the backend.
+  3. **Body parsing guarded:** non-JSON → 400 `{"error":"invalid JSON body"}`;
+     `question` must be a non-empty string ≤ 2000 chars → else 400.
+  4. **Security headers** via `next.config.mjs` `headers()` on all routes:
+     `X-Content-Type-Options: nosniff`, `X-Frame-Options: DENY`,
+     `Referrer-Policy: strict-origin-when-cross-origin` (plus platform HSTS).
+- ⚠️ **Verifier note:** hammering `/api/generate` more than 10×/min now returns 429
+  instead of 503 — run check C3 as a single request.
 
 ---
 
