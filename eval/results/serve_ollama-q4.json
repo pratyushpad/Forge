@@ -1,0 +1,7 @@
+{
+  "label": "ollama-q4",
+  "base_url": "http://127.0.0.1:11434/v1",
+  "ttft_ms_mean": 139.0,
+  "decode_tok_per_s_mean": 227.8,
+  "n_prompts": 3
+}

@@ -1,0 +1,7 @@
+{
+  "label": "vllm-fp16",
+  "base_url": "http://127.0.0.1:8000/v1",
+  "ttft_ms_mean": 19.2,
+  "decode_tok_per_s_mean": 105.2,
+  "n_prompts": 3
+}

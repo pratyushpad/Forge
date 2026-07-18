@@ -3,7 +3,25 @@
 # paths that would otherwise shadow into the py3.11 forge env.
 PY := PYTHONPATH=. $(HOME)/miniconda3/envs/forge/bin/python
 
-.PHONY: test data-stats smoke-train full-train eval export quantize
+.PHONY: test data-stats smoke-train full-train eval export quantize \
+	serve-vllm serve-ollama bench
+
+# Phase 6: serving. vLLM (fp16, GPU) is the throughput path; Ollama (Q4 GGUF) is
+# the reliable CPU/low-VRAM path. Both expose an OpenAI-compatible endpoint.
+serve-vllm:
+	$(PY) -m vllm.entrypoints.openai.api_server --model export/merged_16bit \
+		--served-model-name forge-fp16 --dtype float16 --max-model-len 1024 \
+		--gpu-memory-utilization 0.7 --port 8000
+
+# Ollama's `FROM ./relative.gguf` does not resolve; rewrite to an absolute path
+# at create time so the committed Modelfile stays portable.
+serve-ollama:
+	sed 's|\./export/gguf/|$(CURDIR)/export/gguf/|' serve/Modelfile > /tmp/forge.Modelfile
+	ollama create forge-q4 -f /tmp/forge.Modelfile
+	@echo "created forge-q4; run 'ollama serve' for the OpenAI endpoint on :11434"
+
+bench:
+	$(PY) -m serve.bench --base-url http://127.0.0.1:8000/v1 --model forge-fp16 --label vllm-fp16
 
 eval:
 	$(PY) -m eval.eval_gsm8k

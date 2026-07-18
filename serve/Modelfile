@@ -1,0 +1,18 @@
+# Ollama Modelfile for the Forge GRPO-tuned model (Q4_K_M GGUF).
+# Build:  ollama create forge-q4 -f serve/Modelfile
+# Serve:  ollama serve   (OpenAI-compatible at http://127.0.0.1:11434/v1)
+# The GGUF already carries the Qwen2.5 ChatML template, so only params/system here.
+FROM ./export/gguf/forge-qwen2.5-1.5b-q4_k_m.gguf
+
+PARAMETER temperature 0
+PARAMETER num_ctx 1024
+
+SYSTEM """Respond in the following format:
+<reasoning>
+...
+</reasoning>
+<answer>
+...
+</answer>
+
+The <answer> block must contain only the final numeric answer."""
