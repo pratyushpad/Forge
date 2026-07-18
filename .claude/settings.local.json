@@ -14,7 +14,29 @@
       "Bash(echo \"EVAL LAUNCHED pid $!\")",
       "Bash(nohup env -u PYTHONPATH PYTHONPATH=. /home/praty/miniconda3/envs/forge/bin/python -m eval.eval_gsm8k --limit 300)",
       "Bash(echo \"pid $!\")",
-      "Bash(kill -0 4944)"
+      "Bash(kill -0 4944)",
+      "Read(//home/praty/**)",
+      "Bash(env -u PYTHONPATH /home/praty/miniconda3/envs/forge/bin/pip list)",
+      "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\('base_model:', d.get\\('base_model_name_or_path'\\)\\); print\\('r:', d.get\\('r'\\), 'alpha:', d.get\\('lora_alpha'\\)\\)\")",
+      "Bash(env -u PYTHONPATH PYTHONPATH=. /home/praty/miniconda3/envs/forge/bin/python -m export.merge_lora)",
+      "Bash(env -u PYTHONPATH /home/praty/miniconda3/envs/forge/bin/python ~/llama.cpp/convert_hf_to_gguf.py export/merged_16bit --outfile export/gguf/forge-qwen2.5-1.5b-f16.gguf --outtype f16)",
+      "Bash(nvcc --version)",
+      "Bash(cmake -B build -DGGML_CUDA=OFF -DLLAMA_CURL=OFF)",
+      "Bash(cmake --build build --config Release -j16 --target llama-quantize llama-cli llama-bench)",
+      "Bash(echo \"exit: $?\")",
+      "Bash(~/llama.cpp/build/bin/llama-quantize export/gguf/forge-qwen2.5-1.5b-f16.gguf export/gguf/forge-qwen2.5-1.5b-q4_k_m.gguf Q4_K_M 16)",
+      "Bash(kill -0 14844)",
+      "Bash(env -u PYTHONPATH /home/praty/miniconda3/envs/forge/bin/pip index versions autoawq)",
+      "Bash(env -u PYTHONPATH /home/praty/miniconda3/envs/forge/bin/pip index versions llmcompressor)",
+      "Bash(nohup ~/llama.cpp/build/bin/llama-server -m export/gguf/forge-qwen2.5-1.5b-f16.gguf -t 16 -c 2048 --host 127.0.0.1 --port 8081 --alias forge-f16)",
+      "Bash(echo \"f16 server pid $!\")",
+      "Bash(curl -s http://127.0.0.1:8081/health)",
+      "Bash(nohup env -u PYTHONPATH PYTHONPATH=. /home/praty/miniconda3/envs/forge/bin/python -m eval.eval_served --base-url http://127.0.0.1:8081/v1 --label f16_gguf --limit 100)",
+      "Bash(kill -0 15418)",
+      "Bash(kill 15328)",
+      "Bash(git add *)",
+      "Bash(git commit -q -m 'Phase 5: quantize + export — GGUF f16/Q4_K_M, quality-vs-latency table *)",
+      "Bash(git push *)"
     ]
   }
 }

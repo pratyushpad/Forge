@@ -1,0 +1,9 @@
+{
+  "label": "f16_gguf",
+  "base_url": "http://127.0.0.1:8081/v1",
+  "n": 100,
+  "pass@1": 0.76,
+  "gen_tok_per_s": 12.6,
+  "completion_tokens": 21356,
+  "wall_s": 1699.9
+}

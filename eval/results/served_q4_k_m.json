@@ -1,0 +1,9 @@
+{
+  "label": "q4_k_m",
+  "base_url": "http://127.0.0.1:8080/v1",
+  "n": 100,
+  "pass@1": 0.69,
+  "gen_tok_per_s": 21.1,
+  "completion_tokens": 22563,
+  "wall_s": 1067.4
+}

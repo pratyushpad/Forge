@@ -1,0 +1,9 @@
+{
+  "label": "fp16_merged",
+  "backend": "vLLM GPU (RTX 5060)",
+  "n": 100,
+  "pass@1": 0.76,
+  "gen_tok_per_s": 673.9,
+  "completion_tokens": 21426,
+  "wall_s": 31.8
+}
