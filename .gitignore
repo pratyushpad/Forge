@@ -11,3 +11,7 @@ node_modules/
 
 # Claude Code local settings (machine-specific)
 .claude/settings.local.json
+
+# Unsloth auto-generated compile cache + stray default save dir
+unsloth_compiled_cache/
+grpo_trainer_lora_model/
