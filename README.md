@@ -6,6 +6,8 @@ fine-tuning — on a single RTX 5060 (8GB).** It lifts GSM8K pass@1 from **58.8%
 70.0%** with no measured loss of general ability, then quantizes and serves the
 result behind one interface with a hosted fallback.
 
+**▶ Live demo:** [forge-iota-coral.vercel.app](https://forge-iota-coral.vercel.app) — base vs GRPO-tuned, side by side, on real cached model outputs.
+
 > **RL across domains.** This is the LLM half of a pair: **PPO** for robotic
 > manipulation (99% target-reach, TCS Medical Robotics) and **GRPO** for LLM
 > reasoning (here). Same reinforcement-learning backbone, two very different
