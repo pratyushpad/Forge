@@ -9,7 +9,12 @@
       "Bash(/home/praty/miniconda3/envs/forge/bin/pip install *)",
       "Skill(dataviz)",
       "Skill(dataviz:*)",
-      "Bash(env -u PYTHONPATH PYTHONPATH=. $HOME/miniconda3/envs/forge/bin/python -m eval.plot_training)"
+      "Bash(env -u PYTHONPATH PYTHONPATH=. $HOME/miniconda3/envs/forge/bin/python -m eval.plot_training)",
+      "Bash(nohup make eval)",
+      "Bash(echo \"EVAL LAUNCHED pid $!\")",
+      "Bash(nohup env -u PYTHONPATH PYTHONPATH=. /home/praty/miniconda3/envs/forge/bin/python -m eval.eval_gsm8k --limit 300)",
+      "Bash(echo \"pid $!\")",
+      "Bash(kill -0 4944)"
     ]
   }
 }

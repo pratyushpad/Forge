@@ -1,0 +1,15 @@
+{
+  "model": "unsloth/qwen2.5-1.5b-instruct-unsloth-bnb-4bit",
+  "adapter": "outputs/full",
+  "sampling": "greedy (temperature=0), max_tokens=768, seed=3407",
+  "base": {
+    "n": 300,
+    "strict": 0.5533333333333333,
+    "lenient": 0.6033333333333334
+  },
+  "tuned": {
+    "n": 300,
+    "strict": 0.7266666666666667,
+    "lenient": 0.7266666666666667
+  }
+}

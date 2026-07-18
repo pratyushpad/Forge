@@ -1,0 +1,6 @@
+{
+  "n": 200,
+  "dataset": "ARC-Challenge test[:n]",
+  "base": 0.695,
+  "tuned": 0.685
+}

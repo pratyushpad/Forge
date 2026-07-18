@@ -3,7 +3,11 @@
 # paths that would otherwise shadow into the py3.11 forge env.
 PY := PYTHONPATH=. $(HOME)/miniconda3/envs/forge/bin/python
 
-.PHONY: test data-stats smoke-train full-train
+.PHONY: test data-stats smoke-train full-train eval
+
+eval:
+	$(PY) -m eval.eval_gsm8k
+	$(PY) -m eval.eval_arc
 
 smoke-train:
 	$(PY) -m train.train_grpo --max-steps 20 --output-dir outputs/smoke
