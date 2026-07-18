@@ -8,3 +8,6 @@ wandb/
 *.safetensors
 .env
 node_modules/
+
+# Claude Code local settings (machine-specific)
+.claude/settings.local.json
