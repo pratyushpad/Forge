@@ -1,0 +1,125 @@
+{
+  "generated": "2026-07-17",
+  "examples": [
+    {
+      "question": "Kylar went to the store to buy glasses. One glass costs $5, but every second glass costs only 60% of the price. Kylar wants to buy 16 glasses. How much does he pay?",
+      "gold": "64",
+      "models": {
+        "base": {
+          "raw": "<reasoning>\nFirst, we need to determine the cost of each glass. The first glass costs $5, and every subsequent glass costs 60% of that amount.\n\nThe second glass will cost:\n\\[ 5 \\times 0.6 = 3 \\text{ dollars} \\]\n\nThe third glass will cost:\n\\[ 5 \\times 0.6 = 3 \\text{ dollars} \\]\n\nAnd so on, each subsequent glass costs $3.\n</reasoning>\n<answer>\n120\n</answer>",
+          "reasoning": "First, we need to determine the cost of each glass. The first glass costs $5, and every subsequent glass costs 60% of that amount.\n\nThe second glass will cost:\n\\[ 5 \\times 0.6 = 3 \\text{ dollars} \\]\n\nThe third glass will cost:\n\\[ 5 \\times 0.6 = 3 \\text{ dollars} \\]\n\nAnd so on, each subsequent glass costs $3.",
+          "answer": "120",
+          "correct": false,
+          "latency_s": 0.81
+        },
+        "tuned": {
+          "raw": "<reasoning>\nFirst, we need to determine the cost of one glass when it is not a second glass. The problem states that each glass except for every second glass costs $5.\n\nNext, we calculate the price of a second glass, which is 60% of the original price:\n\\[ \\text{Price of a second glass} = 5 \\times 0.60 = \\$3 \\]\n\nNow, Kylar wants to buy 16 glasses in total. This means he will have 8 sets of two glasses (since every second glass is a set):\n\\[ \\text{Total cost for 8 sets} = 8 \\times 5 = \\$40 \\]\n\\[ \\text{Cost for the remaining 8 glasses} = 8 \\times 3 = \\$24 \\]\n\nAdding these together gives the total amount Kylar will pay:\n\\[ \\text{Total cost} = 40 + 24 = \\$64 \\]\n\nTherefore, Kylar pays $64.\n</reasoning>\n<answer>\n64\n</answer>",
+          "reasoning": "First, we need to determine the cost of one glass when it is not a second glass. The problem states that each glass except for every second glass costs $5.\n\nNext, we calculate the price of a second glass, which is 60% of the original price:\n\\[ \\text{Price of a second glass} = 5 \\times 0.60 = \\$3 \\]\n\nNow, Kylar wants to buy 16 glasses in total. This means he will have 8 sets of two glasses (since every second glass is a set):\n\\[ \\text{Total cost for 8 sets} = 8 \\times 5 = \\$40 \\]\n\\[ \\text{Cost for the remaining 8 glasses} = 8 \\times 3 = \\$24 \\]\n\nAdding these together gives the total amount Kylar will pay:\n\\[ \\text{Total cost} = 40 + 24 = \\$64 \\]\n\nTherefore, Kylar pays $64.",
+          "answer": "64",
+          "correct": true,
+          "latency_s": 1.18
+        }
+      }
+    },
+    {
+      "question": "James runs 3 sprints 3 times a week. He runs 60 meters each sprint. How many total meters does he run a week?",
+      "gold": "540",
+      "models": {
+        "base": {
+          "raw": "<reasoning>\nTo find the total distance James runs in a week, we need to multiply the number of sprints by the distance of each sprint and then multiply that result by the number of times he runs each week.\n</reasoning>\n<answer>\n3 * 60 * 3 = 540 meters\n</answer>",
+          "reasoning": "To find the total distance James runs in a week, we need to multiply the number of sprints by the distance of each sprint and then multiply that result by the number of times he runs each week.",
+          "answer": "3 * 60 * 3 = 540 meters",
+          "correct": false,
+          "latency_s": 0.45
+        },
+        "tuned": {
+          "raw": "<reasoning>\nFirst, we need to determine the total distance James runs in one session of three sprints:\n\\[ 3 \\text{ sprints} \\times 60 \\text{ meters per sprint} = 180 \\text{ meters per session} \\]\n\nSince he runs this session every day for three days a week, we calculate the weekly total by multiplying the daily distance by the number of sessions in a week:\n\\[ 180 \\text{ meters per session} \\times 3 \\text{ sessions per week} = 540 \\text{ meters per week} \\]\n\nTherefore, James runs a total of 540 meters each week.\n</reasoning>\n<answer>\n540\n</answer>",
+          "reasoning": "First, we need to determine the total distance James runs in one session of three sprints:\n\\[ 3 \\text{ sprints} \\times 60 \\text{ meters per sprint} = 180 \\text{ meters per session} \\]\n\nSince he runs this session every day for three days a week, we calculate the weekly total by multiplying the daily distance by the number of sessions in a week:\n\\[ 180 \\text{ meters per session} \\times 3 \\text{ sessions per week} = 540 \\text{ meters per week} \\]\n\nTherefore, James runs a total of 540 meters each week.",
+          "answer": "540",
+          "correct": true,
+          "latency_s": 0.85
+        }
+      }
+    },
+    {
+      "question": "Weng earns $12 an hour for babysitting. Yesterday she babysat for 50 minutes. How much did she earn?",
+      "gold": "10",
+      "models": {
+        "base": {
+          "raw": "To calculate how much Weng earned, we need to multiply the hourly rate by the number of hours worked.\n\nHourly rate: $12/hour\nNumber of hours worked: 50 minutes\n\nFirst, convert the time from minutes to hours:\n\\[ \\text{Time in hours} = \\frac{\\text{Minutes}}{60} = \\frac{50}{60} = \\frac{5}{6} \\]\n\nNow calculate earnings:\n\\[ \\text{Earnings} = \\text{Hourly rate} \\times \\text{Time in hours} = 12 \\times \\frac{5}{6} = 10 \\]\n\nSo, Weng earned $10 yesterday.",
+          "reasoning": "To calculate how much Weng earned, we need to multiply the hourly rate by the number of hours worked.\n\nHourly rate: $12/hour\nNumber of hours worked: 50 minutes\n\nFirst, convert the time from minutes to hours:\n\\[ \\text{Time in hours} = \\frac{\\text{Minutes}}{60} = \\frac{50}{60} = \\frac{5}{6} \\]\n\nNow calculate earnings:\n\\[ \\text{Earnings} = \\text{Hourly rate} \\times \\text{Time in hours} = 12 \\times \\frac{5}{6} = 10 \\]\n\nSo, Weng earned $10 yesterday.",
+          "answer": null,
+          "correct": false,
+          "latency_s": 0.81
+        },
+        "tuned": {
+          "raw": "<reasoning>\nFirst, we need to determine how many hours Weng worked yesterday. Since there are 60 minutes in an hour, we can convert the 50 minutes into hours by dividing 50 by 60:\n\\[ \\frac{50}{60} = \\frac{5}{6} \\text{ hours} \\]\n\nNext, we calculate her earnings by multiplying the number of hours she worked by her hourly wage. Since she earns $12 per hour, we have:\n\\[ 12 \\times \\frac{5}{6} = 10 \\]\n\nTherefore, Weng earned $10.\n</reasoning>\n<answer>\n10\n</answer>",
+          "reasoning": "First, we need to determine how many hours Weng worked yesterday. Since there are 60 minutes in an hour, we can convert the 50 minutes into hours by dividing 50 by 60:\n\\[ \\frac{50}{60} = \\frac{5}{6} \\text{ hours} \\]\n\nNext, we calculate her earnings by multiplying the number of hours she worked by her hourly wage. Since she earns $12 per hour, we have:\n\\[ 12 \\times \\frac{5}{6} = 10 \\]\n\nTherefore, Weng earned $10.",
+          "answer": "10",
+          "correct": true,
+          "latency_s": 0.8
+        }
+      }
+    },
+    {
+      "question": "Betty is saving for a $100 wallet. She has half the money she needs. Her parents give her $15, and her grandparents give twice as much as her parents. How much more money does Betty need?",
+      "gold": "5",
+      "models": {
+        "base": {
+          "raw": "<reasoning>\nFirst, we determine how much money Betty currently has by noting that she has half of what she needs for a wallet, which is \\( \\frac{100}{2} = 50 \\) dollars.\n\nNext, her parents give her $15. Her grandparents then give twice as much as her parents, which amounts to \\( 2 \\times 15 = 30 \\) dollars.\n\nAdding these together with the money Betty already has:\n\\[ 50 + 15 + 30 = 95 \\]\n\nNow we need to find out how much more money she needs. Since she is saving for a $100 wallet, and she currently has $95, the additional amount needed is \\( 100 - 95 = 5 \\) dollars.\n</reasoning>\n<answer>\n5\n</answer>",
+          "reasoning": "First, we determine how much money Betty currently has by noting that she has half of what she needs for a wallet, which is \\( \\frac{100}{2} = 50 \\) dollars.\n\nNext, her parents give her $15. Her grandparents then give twice as much as her parents, which amounts to \\( 2 \\times 15 = 30 \\) dollars.\n\nAdding these together with the money Betty already has:\n\\[ 50 + 15 + 30 = 95 \\]\n\nNow we need to find out how much more money she needs. Since she is saving for a $100 wallet, and she currently has $95, the additional amount needed is \\( 100 - 95 = 5 \\) dollars.",
+          "answer": "5",
+          "correct": true,
+          "latency_s": 0.98
+        },
+        "tuned": {
+          "raw": "<reasoning>\nFirst, we determine how much money Betty currently has. Since she has half the amount needed for a wallet that costs $100, she has:\n\\[ \\frac{100}{2} = 50 \\text{ dollars} \\]\n\nNext, her parents give her $15. Adding this to what she already has gives:\n\\[ 50 + 15 = 65 \\text{ dollars} \\]\n\nHer grandparents give twice as much as her parents, which is:\n\\[ 2 \\times 15 = 30 \\text{ dollars} \\]\n\nAdding the money from her grandparents to what she now has gives:\n\\[ 65 + 30 = 95 \\text{ dollars} \\]\n\nThe wallet costs $100, so the amount of money Betty still needs is:\n\\[ 100 - 95 = 5 \\text{ dollars} \\]\n</reasoning>\n<answer>\n5\n</answer>",
+          "reasoning": "First, we determine how much money Betty currently has. Since she has half the amount needed for a wallet that costs $100, she has:\n\\[ \\frac{100}{2} = 50 \\text{ dollars} \\]\n\nNext, her parents give her $15. Adding this to what she already has gives:\n\\[ 50 + 15 = 65 \\text{ dollars} \\]\n\nHer grandparents give twice as much as her parents, which is:\n\\[ 2 \\times 15 = 30 \\text{ dollars} \\]\n\nAdding the money from her grandparents to what she now has gives:\n\\[ 65 + 30 = 95 \\text{ dollars} \\]\n\nThe wallet costs $100, so the amount of money Betty still needs is:\n\\[ 100 - 95 = 5 \\text{ dollars} \\]",
+          "answer": "5",
+          "correct": true,
+          "latency_s": 1.08
+        }
+      }
+    },
+    {
+      "question": "A robe takes 2 bolts of blue fiber and half that much white fiber. How many bolts in total does it take?",
+      "gold": "3",
+      "models": {
+        "base": {
+          "raw": "To find the total number of bolts needed for the robe, we first need to determine how many bolts of white fiber are required.\n\nThe problem states that a robe requires 2 bolts of blue fiber and half as many bolts of white fiber. Therefore, the number of bolts of white fiber is:\n\n\\[ \\frac{1}{2} \\times 2 = 1 \\text{ bolt of white fiber} \\]\n\nNow we add the number of bolts of blue fiber to the number of bolts of white fiber to find the total number of bolts needed for the robe:\n\n\\[ 2 \\text{ (blue)} + 1 \\text{ (white)} = 3 \\text{ bolts in total} \\]\n\nSo, it takes a total of 3 bolts to make the robe.",
+          "reasoning": "To find the total number of bolts needed for the robe, we first need to determine how many bolts of white fiber are required.\n\nThe problem states that a robe requires 2 bolts of blue fiber and half as many bolts of white fiber. Therefore, the number of bolts of white fiber is:\n\n\\[ \\frac{1}{2} \\times 2 = 1 \\text{ bolt of white fiber} \\]\n\nNow we add the number of bolts of blue fiber to the number of bolts of white fiber to find the total number of bolts needed for the robe:\n\n\\[ 2 \\text{ (blue)} + 1 \\text{ (white)} = 3 \\text{ bolts in total} \\]\n\nSo, it takes a total of 3 bolts to make the robe.",
+          "answer": null,
+          "correct": false,
+          "latency_s": 0.86
+        },
+        "tuned": {
+          "raw": "<reasoning>\nThe problem states that a robe requires 2 bolts of blue fiber and half that amount of white fiber. Therefore, the number of bolts required for the white fiber is \\( \\frac{2}{2} = 1 \\) bolt.\n\nAdding the blue and white fibers together:\n- Blue fiber: 2 bolts\n- White fiber: 1 bolt\n\nTotal bolts needed: \\( 2 + 1 = 3 \\) bolts.\n</reasoning>\n<answer>\n3\n</answer>",
+          "reasoning": "The problem states that a robe requires 2 bolts of blue fiber and half that amount of white fiber. Therefore, the number of bolts required for the white fiber is \\( \\frac{2}{2} = 1 \\) bolt.\n\nAdding the blue and white fibers together:\n- Blue fiber: 2 bolts\n- White fiber: 1 bolt\n\nTotal bolts needed: \\( 2 + 1 = 3 \\) bolts.",
+          "answer": "3",
+          "correct": true,
+          "latency_s": -0.33
+        }
+      }
+    },
+    {
+      "question": " Toulouse has twice as many sheep as Charleston. Charleston has 4 times as many sheep as Seattle. If Seattle has 20 sheep, how many do the three have together?",
+      "gold": "260",
+      "models": {
+        "base": {
+          "raw": "To find out how many sheep each city has:\n\n1. Seattle has 20 sheep.\n2. Charleston has 4 times as many sheep as Seattle, so:\n   \\( \\text{Charleston's sheep} = 4 \\times \\text{Seattle's sheep} = 4 \\times 20 = 80 \\)\n3. Toulouse has twice as many sheep as Charleston, so:\n   \\( \\text{Toulouse's sheep} = 2 \\times \\text{Charleston's sheep} = 2 \\times 80 = 160 \\)\n\nNow, to find out how many sheep the three cities have together:\n\n\\( \\text{Total sheep} = \\text{Seattle's sheep} + \\text{Charleston's sheep} + \\text{Toulouse's sheep} \\)\n\\( \\text{Total sheep} = 20 + 80 + 160 = 260 \\)\n\nSo, the three cities have a total of 260 sheep together.",
+          "reasoning": "To find out how many sheep each city has:\n\n1. Seattle has 20 sheep.\n2. Charleston has 4 times as many sheep as Seattle, so:\n   \\( \\text{Charleston's sheep} = 4 \\times \\text{Seattle's sheep} = 4 \\times 20 = 80 \\)\n3. Toulouse has twice as many sheep as Charleston, so:\n   \\( \\text{Toulouse's sheep} = 2 \\times \\text{Charleston's sheep} = 2 \\times 80 = 160 \\)\n\nNow, to find out how many sheep the three cities have together:\n\n\\( \\text{Total sheep} = \\text{Seattle's sheep} + \\text{Charleston's sheep} + \\text{Toulouse's sheep} \\)\n\\( \\text{Total sheep} = 20 + 80 + 160 = 260 \\)\n\nSo, the three cities have a total of 260 sheep together.",
+          "answer": null,
+          "correct": false,
+          "latency_s": 1.11
+        },
+        "tuned": {
+          "raw": "<reasoning>\nFirst, we need to determine the number of sheep in each city based on the given relationships.\n\n1. Seattle has 20 sheep.\n2. Charleston has 4 times as many sheep as Seattle, so:\n   \\[\n   \\text{Number of sheep in Charleston} = 4 \\times 20 = 80\n   \\]\n3. Toulouse has twice as many sheep as Charleston, so:\n   \\[\n   \\text{Number of sheep in Toulouse} = 2 \\times 80 = 160\n   \\]\n\nNext, we sum the number of sheep in all three cities to find the total:\n\\[\n\\text{Total number of sheep} = \\text{Sheep in Seattle} + \\text{Sheep in Charleston} + \\text{Sheep in Toulouse}\n\\]\n\\[\n\\text{Total number of sheep} = 20 + 80 + 160\n\\]\n\nAdding these together:\n\\[\n20 + 80 = 100\n\\]\n\\[\n100 + 160 = 260\n\\]\n\nTherefore, the total number of sheep in Toulouse, Charleston, and Seattle is:\n\\[\n\\boxed{260}\n\\]",
+          "reasoning": "<reasoning>\nFirst, we need to determine the number of sheep in each city based on the given relationships.\n\n1. Seattle has 20 sheep.\n2. Charleston has 4 times as many sheep as Seattle, so:\n   \\[\n   \\text{Number of sheep in Charleston} = 4 \\times 20 = 80\n   \\]\n3. Toulouse has twice as many sheep as Charleston, so:\n   \\[\n   \\text{Number of sheep in Toulouse} = 2 \\times 80 = 160\n   \\]\n\nNext, we sum the number of sheep in all three cities to find the total:\n\\[\n\\text{Total number of sheep} = \\text{Sheep in Seattle} + \\text{Sheep in Charleston} + \\text{Sheep in Toulouse}\n\\]\n\\[\n\\text{Total number of sheep} = 20 + 80 + 160\n\\]\n\nAdding these together:\n\\[\n20 + 80 = 100\n\\]\n\\[\n100 + 160 = 260\n\\]\n\nTherefore, the total number of sheep in Toulouse, Charleston, and Seattle is:\n\\[\n\\boxed{260}\n\\]",
+          "answer": null,
+          "correct": false,
+          "latency_s": 1.36
+        }
+      }
+    }
+  ]
+}
