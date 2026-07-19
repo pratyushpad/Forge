@@ -5,7 +5,7 @@ project: everything built, everything measured, how the live endpoint actually
 behaves, and what's genuinely left. It is self-contained — you should not need any
 other file to get oriented — but it points to the deeper docs where useful.
 
-- **Repo:** `/home/praty/forge` — public: https://github.com/pratyushpad/forge
+- **Repo:** `/home/praty/forge` — public: https://github.com/pratyushpad/Forge
 - **Live site:** https://forge-iota-coral.vercel.app — **five pages, real GPU
   inference.** Not cached-only anymore.
 - **Status:** the project is **feature-complete**. Both original milestones (live
@@ -56,10 +56,24 @@ says so in as many words.
 - **README** — leads with the live playground and maps all five routes.
 
 ### Genuinely open (small, ranked)
-1. **Nothing has been visually verified.** Every page was code-reviewed and
-   content-verified via curl, but no one has *looked* at the site. Install a browser
-   MCP (`claude mcp add playwright -- npx @playwright/mcp@latest`) and do a real pass
-   at 375 / 768 / 1440 across all five routes. **This is the top of the list.**
+1. **Visual verification.** Every page was code-reviewed and content-verified via curl.
+   Do a real pass at 375 / 768 / 1440 across all five routes. **Top of the list.**
+
+   > **The plain `claude mcp add playwright -- npx @playwright/mcp@latest` does NOT
+   > work on this machine.** There is no system Node, and `which npx` resolves to the
+   > *Windows* `/mnt/c/Program Files/nodejs/npx` via WSL PATH interop, which can't run
+   > a Linux stdio server. An absolute path alone also fails — `npx` is a JS file whose
+   > `#!/usr/bin/env node` shebang still needs `node` on PATH. Use both:
+   > ```
+   > claude mcp add playwright \
+   >   --env PATH=/home/praty/miniconda3/envs/node/bin:/usr/local/bin:/usr/bin:/bin \
+   >   -- /home/praty/miniconda3/envs/node/bin/npx --yes @playwright/mcp@latest
+   > ```
+   > Chromium **is already downloaded** (`~/.cache/ms-playwright/`, headless shell
+   > 149) and **verified to launch** on this WSL box — no missing system libs, no sudo
+   > needed. No MCP is strictly required either: `PATH=$HOME/miniconda3/envs/node/bin:$PATH
+   > npx playwright screenshot --viewport-size=W,H <url> out.png` works from Bash and
+   > the image can be read directly.
 2. **Per-route OG images.** Only the root has one (`app/opengraph-image.tsx`), so
    sharing `/results` shows the generic card.
 3. **`docs/sample_traces.md` is the only trace source.** All five contrast cases are

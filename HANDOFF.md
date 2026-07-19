@@ -5,7 +5,7 @@ This is a **completed** project. All 8 build phases (train → eval → quantize
 is the full record of what was accomplished — every measured number, runtime, config,
 and the deploy saga — followed by the **UI/UX handoff** for the next session.
 
-- **Repo:** `/home/praty/forge` — public: https://github.com/pratyushpad/forge
+- **Repo:** `/home/praty/forge` — public: https://github.com/pratyushpad/Forge
 - **Live demo:** https://forge-iota-coral.vercel.app
 - **One-liner:** Trained Qwen2.5-1.5B to reason on GSM8K via **GRPO** (RL with
   verifiable rewards, the DeepSeek-R1 technique — no SFT, no human labels) on a

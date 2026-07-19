@@ -7,7 +7,7 @@ the data, the model results, the live site, and API security are intact.
 
 - **Last full verification:** 2026-07-18, commit `c0af1b2`, branch `main`.
 - **Result: ALL CHECKS PASS** (baseline snapshot below).
-- **Repo:** `/home/praty/forge` — public: https://github.com/pratyushpad/forge
+- **Repo:** `/home/praty/forge` — public: https://github.com/pratyushpad/Forge
 - **Live:** https://forge-iota-coral.vercel.app
 
 ## How to use this file
@@ -260,10 +260,10 @@ make eval        # eval_gsm8k + eval_arc, greedy seed 3407 -> writes eval/result
 cd ~/forge
 git status --short                 # expect: clean (nothing uncommitted you didn't intend)
 git branch --show-current          # expect: main
-gh repo view pratyushpad/forge --json visibility,url   # expect: PUBLIC
+gh repo view pratyushpad/Forge --json visibility,url   # expect: PUBLIC
 git log --oneline -5               # expect: c0af1b2 HANDOFF at/near HEAD
 ```
-**Verified 2026-07-18:** branch `main`, remote `github.com/pratyushpad/forge`, visibility
+**Verified 2026-07-18:** branch `main`, remote `github.com/pratyushpad/Forge`, visibility
 **PUBLIC**, working tree clean.
 - Note: `export/merged_16bit/` **tokenizer/config JSON files are tracked** (small text,
   no weights) — harmless and intentional (lets others rebuild the tokenizer). The

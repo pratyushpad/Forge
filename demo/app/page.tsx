@@ -299,7 +299,7 @@ export default function Home() {
       <footer>
         Base {BASE_WINS}/{EXAMPLES.length} vs GRPO-tuned {TUNED_WINS}/{EXAMPLES.length} on the
         examples above ·{" "}
-        <a href="https://github.com/pratyushpad/forge" target="_blank" rel="noreferrer">
+        <a href="https://github.com/pratyushpad/Forge" target="_blank" rel="noreferrer">
           source &amp; model card on GitHub
         </a>
       </footer>
