@@ -6,7 +6,22 @@ fine-tuning — on a single RTX 5060 (8GB).** It lifts GSM8K pass@1 from **58.8%
 70.0%** with no measured loss of general ability, then quantizes and serves the
 result behind one interface with a hosted fallback.
 
-**▶ Live demo:** [forge-iota-coral.vercel.app](https://forge-iota-coral.vercel.app) — base vs GRPO-tuned, side by side, on real cached model outputs.
+## ▶ Live demo — [forge-iota-coral.vercel.app](https://forge-iota-coral.vercel.app)
+
+The [**playground**](https://forge-iota-coral.vercel.app/playground) runs **real inference on a
+live GPU**: type any grade-school math problem and watch the stock base model and the GRPO-tuned
+adapter answer it side by side, streaming. Both are served from a single vLLM process via
+multi-LoRA — the same 73MB adapter the training run produced, not a merged copy. It scales to
+zero between visits, so the first request spends ~60–90s waking the container before tokens
+start.
+
+| page | what's there |
+|---|---|
+| [`/`](https://forge-iota-coral.vercel.app) | the headline result and a side-by-side sample |
+| [`/playground`](https://forge-iota-coral.vercel.app/playground) | live base-vs-tuned inference on a problem you type |
+| [`/method`](https://forge-iota-coral.vercel.app/method) | GRPO in plain terms, the reward stack, and the cold-start bug |
+| [`/results`](https://forge-iota-coral.vercel.app/results) | every figure with the committed file it came from |
+| [`/traces`](https://forge-iota-coral.vercel.app/traces) | full reasoning traces — including the problem both models miss |
 
 > **RL across domains.** This is the LLM half of a pair: **PPO** for robotic
 > manipulation (99% target-reach, TCS Medical Robotics) and **GRPO** for LLM
@@ -55,6 +70,8 @@ train/    reward functions + GRPO trainer (Unsloth + TRL, vLLM rollouts)
 eval/     pass@1, forgetting check, reward-curve plot (committed, seeded)
 export/   merge LoRA → fp16 → GGUF f16/Q4_K_M  (quality-vs-latency table)
 serve/    vLLM (fp16/GPU) + Ollama (Q4/GPU), provider-agnostic client w/ fallback
+          modal_app.py — the scale-to-zero GPU endpoint behind the live playground
+demo/     Next.js site (5 routes); gen_examples.py / gen_traces.py build its data
 ```
 
 Stack: Qwen2.5-1.5B-Instruct · Unsloth 2026.7.3 · TRL 0.24 · vLLM 0.19.1 ·

@@ -910,6 +910,92 @@ h2 {
    scrolling height the live columns use. */
 .reasoning.trace-pane { height: auto; max-height: 420px; }
 
+/* ---------- go deeper (home → the other routes) ---------- */
+.deeper {
+  margin-top: 24px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+.deep-card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 22px;
+  background: var(--iron);
+  border: 1px solid var(--seam);
+  text-decoration: none;
+  transition: transform var(--dur-base) var(--ease-out), border-color var(--dur-base) var(--ease-out);
+}
+.deep-k {
+  font: 11px/1 var(--font-mono);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ember);
+}
+.deep-t {
+  font-family: var(--font-display);
+  font-size: 19px;
+  line-height: 1.15;
+  text-transform: uppercase;
+  letter-spacing: 0.005em;
+  color: var(--ink);
+}
+.deep-d { font-size: 14px; color: var(--smoke); }
+.deep-card:active { transform: scale(0.995); }
+@media (hover: hover) and (pointer: fine) {
+  .deep-card:hover { border-color: var(--ember); transform: translateY(-2px); }
+  .deep-card:hover .deep-t { color: var(--glow); }
+}
+
+/* ---------- error / not-found ---------- */
+.fail { margin-top: 96px; max-width: 68ch; }
+.fail-code {
+  margin-top: 20px;
+  font: 12px/1 var(--font-mono);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ember);
+}
+.fail h2 { margin-top: 14px; }
+.fail .prose { margin-top: 16px; }
+.fail-links { margin: 24px 0 0; padding: 0; list-style: none; }
+.fail-links li {
+  padding: 12px 0;
+  border-top: 1px solid var(--seam);
+  color: var(--smoke);
+  font-size: 14px;
+}
+.fail-links a {
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-color: var(--ember);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+  transition: color var(--dur-base) var(--ease-out);
+}
+@media (hover: hover) and (pointer: fine) {
+  .fail-links a:hover { color: var(--glow); }
+}
+.fail-actions {
+  margin-top: 24px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.fail-home {
+  font: 11px/1 var(--font-mono);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  text-decoration: none;
+  transition: color var(--dur-base) var(--ease-out);
+}
+@media (hover: hover) and (pointer: fine) {
+  .fail-home:hover { color: var(--ink); }
+}
+
 /* ---------- footer ---------- */
 footer {
   margin-top: 72px;
@@ -954,6 +1040,7 @@ footer a {
   .speclist > div:nth-child(even) { padding-left: 0; border-left: none; }
   .grid { grid-template-columns: 1fr; }
   .resgrid { grid-template-columns: 1fr; }
+  .deeper { grid-template-columns: 1fr; }
   .picker { grid-template-columns: 1fr; }
   .reasoning { height: 220px; }
 }

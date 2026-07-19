@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import examplesData from "../public/examples.json";
 import { prefersReducedMotion, replayDuration } from "../lib/motion";
@@ -53,21 +54,6 @@ function useTypewriter() {
       }, 33);
     });
   return { text, done, run };
-}
-
-function useInView<T extends HTMLElement>() {
-  const ref = useRef<T | null>(null);
-  const [inView, setInView] = useState(false);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const io = new IntersectionObserver(([entry]) => entry.isIntersecting && setInView(true), {
-      threshold: 0.25,
-    });
-    io.observe(el);
-    return () => io.disconnect();
-  }, []);
-  return { ref, inView };
 }
 
 function ModelColumn({
@@ -135,39 +121,6 @@ function VerdictChip({ label, out }: { label: string; out: ModelOut }) {
   );
 }
 
-function Bar({
-  name,
-  value,
-  label,
-  tuned,
-  show,
-  delayMs = 0,
-}: {
-  name: string;
-  value: number;
-  label: string;
-  tuned?: boolean;
-  show: boolean;
-  delayMs?: number;
-}) {
-  const fillStyle = {
-    width: `${value}%`,
-    transitionDelay: `${delayMs}ms`,
-  } as CSSProperties;
-  return (
-    <div className="bar-row">
-      <span className="name">{name}</span>
-      <div className="bar-track">
-        <div
-          className={`bar-fill ${tuned ? "tuned" : "base"} ${show ? "shown" : ""}`}
-          style={fillStyle}
-        />
-      </div>
-      <span className="bar-val">{label}</span>
-    </div>
-  );
-}
-
 const enter = (ms: number): CSSProperties => ({ animationDelay: `${ms}ms` });
 
 export default function Home() {
@@ -176,7 +129,6 @@ export default function Home() {
   const [running, setRunning] = useState(false);
   const base = useTypewriter();
   const tuned = useTypewriter();
-  const results = useInView<HTMLDivElement>();
 
   const run = async (i: number) => {
     const ex = EXAMPLES[i];
@@ -309,50 +261,38 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="results" ref={results.ref}>
-        <div className="sec-label">03 · The proof</div>
-        <h2>Cold metal vs. forged</h2>
-        <div className="resgrid">
-          <div className="card">
-            <h4>GSM8K pass@1 (1,319 held-out problems)</h4>
-            <Bar name="Base" value={58.8} label="58.8%" show={results.inView} />
-            <Bar
-              name="GRPO-tuned"
-              value={70}
-              label="70.0%"
-              tuned
-              show={results.inView}
-              delayMs={90}
-            />
-            <p className="caption">
-              +11.2 points from RL alone — no supervised fine-tuning, no human labels, just a math
-              checker as the reward.
-            </p>
-          </div>
-          <div className="card">
-            <h4>Forgetting check — ARC-Challenge (200 questions)</h4>
-            <Bar name="Base" value={69.5} label="69.5%" show={results.inView} />
-            <Bar
-              name="GRPO-tuned"
-              value={68.5}
-              label="68.5%"
-              tuned
-              show={results.inView}
-              delayMs={90}
-            />
-            <p className="caption">
-              −1.0 pt, within noise — math RL did not degrade general reasoning.
-            </p>
-          </div>
-          <div className="card span">
-            <h4>Reward climbing during training (750 steps)</h4>
-            <img
-              className="curve"
-              src="/reward_curve.png"
-              alt="GRPO training curves: mean group reward rising from 1.23 to 2.80 over 750 steps, with completion length and KL below"
-            />
-            <p className="caption">Mean group reward 1.23 → 2.80 (of 3.25) over 750 steps.</p>
-          </div>
+      <section>
+        <div className="sec-label">03 · Go deeper</div>
+        <h2>The rest of the evidence</h2>
+        <div className="deeper">
+          <Link className="deep-card" href="/playground">
+            <span className="deep-k">Playground</span>
+            <span className="deep-t">Run it yourself, live</span>
+            <span className="deep-d">
+              Type any problem. Both models answer side by side on a real GPU, streaming.
+            </span>
+          </Link>
+          <Link className="deep-card" href="/method">
+            <span className="deep-k">Method</span>
+            <span className="deep-t">How GRPO actually works</span>
+            <span className="deep-d">
+              The reward stack, and the bug where every reward was zero so the run learned nothing.
+            </span>
+          </Link>
+          <Link className="deep-card" href="/results">
+            <span className="deep-k">Results</span>
+            <span className="deep-t">Every number, and its source</span>
+            <span className="deep-d">
+              Strict vs lenient scoring, the forgetting control, quantization cost, serving latency.
+            </span>
+          </Link>
+          <Link className="deep-card" href="/traces">
+            <span className="deep-k">Traces</span>
+            <span className="deep-t">Read the reasoning</span>
+            <span className="deep-d">
+              Unedited completions on held-out problems — including the one both models miss.
+            </span>
+          </Link>
         </div>
       </section>
 
