@@ -846,6 +846,70 @@ h2 {
 .dtable tr.hi td { color: var(--ink); }
 .dtable td.neg { color: var(--smoke); }
 
+/* ---------- trace gallery ---------- */
+.trace { margin-top: 40px; }
+.trace-head {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+}
+.trace-num {
+  font: 700 12px/1 var(--font-mono);
+  letter-spacing: 0.08em;
+  color: var(--ember);
+}
+.trace-split {
+  font: 11px/1 var(--font-mono);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--smoke);
+}
+.trace-q {
+  margin: 12px 0 0;
+  max-width: 72ch;
+  font-size: 17px;
+  color: var(--ink);
+  text-wrap: pretty;
+}
+.trace-verdicts {
+  margin-top: 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.trace-details { margin-top: 16px; }
+.trace-details > summary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  min-height: 44px;
+  background: var(--iron);
+  border: 1px solid var(--seam);
+  font: 11px/1 var(--font-mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  cursor: pointer;
+  list-style: none;
+  transition: border-color var(--dur-base) var(--ease-out), color var(--dur-base) var(--ease-out);
+}
+.trace-details > summary::-webkit-details-marker { display: none; }
+.trace-details > summary::before {
+  content: "+";
+  font-size: 14px;
+  color: var(--ember);
+}
+.trace-details[open] > summary::before { content: "−"; }
+@media (hover: hover) and (pointer: fine) {
+  .trace-details > summary:hover { border-color: var(--seam-hover); color: var(--ink); }
+}
+/* Panes hold full completions, so they size to content instead of the fixed
+   scrolling height the live columns use. */
+.reasoning.trace-pane { height: auto; max-height: 420px; }
+
 /* ---------- footer ---------- */
 footer {
   margin-top: 72px;
