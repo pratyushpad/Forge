@@ -791,6 +791,61 @@ h2 {
   text-align: right;
 }
 
+/* ---------- data tables ---------- */
+.dtable-wrap {
+  margin-top: 20px;
+  overflow-x: auto; /* wide tables scroll inside their own box, never the page */
+  border: 1px solid var(--seam);
+  background: var(--iron);
+}
+.dtable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+.dtable caption {
+  caption-side: top;
+  text-align: left;
+  padding: 14px 18px 0;
+  font: 11px/1 var(--font-mono);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--smoke);
+}
+.dtable th, .dtable td {
+  padding: 12px 18px;
+  text-align: right;
+  border-bottom: 1px solid var(--seam);
+  white-space: nowrap;
+}
+.dtable thead th {
+  font: 11px/1 var(--font-mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--smoke);
+  font-weight: 400;
+}
+.dtable th[scope="row"] {
+  text-align: left;
+  font-weight: 600;
+  color: var(--ink);
+}
+.dtable td {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-soft);
+}
+.dtable td small {
+  display: block;
+  margin-top: 2px;
+  font-size: 11px;
+  color: var(--smoke);
+}
+.dtable tbody tr:last-child th, .dtable tbody tr:last-child td { border-bottom: none; }
+.dtable tr.hi th[scope="row"] { color: var(--ember); }
+.dtable tr.hi td { color: var(--ink); }
+.dtable td.neg { color: var(--smoke); }
+
 /* ---------- footer ---------- */
 footer {
   margin-top: 72px;

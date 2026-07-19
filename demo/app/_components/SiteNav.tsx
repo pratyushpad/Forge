@@ -3,11 +3,12 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-// /results and /traces slot in here as they get built.
+// /traces slots in here as it gets built.
 const LINKS = [
   { href: "/", label: "Overview" },
   { href: "/playground", label: "Playground" },
   { href: "/method", label: "Method" },
+  { href: "/results", label: "Results" },
 ];
 
 export default function SiteNav() {
