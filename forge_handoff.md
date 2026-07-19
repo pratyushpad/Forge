@@ -166,10 +166,12 @@ visitor → Vercel page → POST /api/generate {question, model:"base"|"tuned"}
 (`outputs/full/adapter_config.json` + `adapter_model.safetensors`), so this mirrors
 training and avoids shuffling 3GB merged weights. The adapter goes on a Modal Volume.
 
-**The user's decisions (locked):** host = **Modal** (free ~$30/mo credits, real GPU,
-scale-to-zero, set a $0-over-credits spend cap so they can never be charged). Their
-local RTX 5060 is **not** involved — it only did training; serving is entirely on
-Modal's GPU.
+**The user's decisions (locked):** host = **Modal**, real GPU, scale-to-zero → $0
+idle. Billing: with a card on file the account gets **$30/month** credits (no card =
+only $1/month, so the card stays). Protection against real charges = a **workspace
+budget set to ≤ $30** (dashboard → Usage & Billing → "Set a budget"), which hard-stops
+apps at/below the free-credit line before any charge triggers. Their local RTX 5060 is
+**not** involved — it only did training; serving is entirely on Modal's GPU.
 
 **Your role tomorrow:** walk the user through `serve/MODAL_DEPLOY.md` (install CLI →
 `modal token new` → set spend cap → `modal secret create forge-api` → upload adapter

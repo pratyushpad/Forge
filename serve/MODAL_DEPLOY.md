@@ -15,11 +15,19 @@ pip install modal
 modal token new        # opens a browser, links this machine to your Modal account
 ```
 
-## 1. One-time: cap spend at your free credits (so you can NEVER be charged)
+## 1. One-time: set a budget so you can NEVER be charged real money
 
-In the Modal dashboard → **Settings → Usage & Billing** → set a **spend limit**.
-Leave no card on file, or set the cap to your monthly free credits. Scale-to-zero
-means you only burn credits during the seconds a request runs — a demo uses cents.
+Modal's free credits depend on the tier:
+- **No card on file:** $1/month included credits.
+- **Card on file:** **$30/month** included credits (this is the tier we're on).
+
+With a card, there IS a paid path ("when usage reaches $40, you'll be charged $10").
+To keep the $30 runway AND guarantee $0 real spend: dashboard → **Settings →
+Usage & Billing → Overview → "Set a budget"**, enter **`30`** (= the free credits) or
+lower (e.g. `5` for a tighter margin). Apps hard-stop when usage hits the budget —
+which is at/below the free credits, before any charge triggers. Scale-to-zero means a
+demo only burns credits during the seconds a request runs (cents/month), so even $5 is
+plenty. **Do not remove the card to save money — that drops you back to $1/month.**
 
 ## 2. Create the API key Secret (the bearer token the proxy sends upstream)
 
