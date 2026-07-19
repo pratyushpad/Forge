@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 import examplesData from "../public/examples.json";
+import { prefersReducedMotion, replayDuration } from "../lib/motion";
 
 type ModelOut = {
   raw: string;
@@ -21,21 +22,6 @@ const TUNED_WINS = EXAMPLES.filter((e) => e.models.tuned.correct).length;
 // Those render as "no clear answer", never the raw string or "null".
 const cleanAnswer = (a: string | null): string | null =>
   a && /^[$-]?[\d.,]+%?$/.test(a.trim()) ? a.trim() : null;
-
-const prefersReducedMotion = () =>
-  typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-// Replay duration derived from each output's real measured latency_s, slowed to
-// reading speed. Floored/capped by text length so pacing stays readable, and
-// latency clamped positive (one cached value is negative from clock skew).
-function replayDuration(out: ModelOut): number {
-  const len = out.reasoning.length;
-  const lat = Math.max(0.4, out.latency_s ?? 0);
-  let ms = lat * 3500;
-  ms = Math.max(ms, (len / 260) * 1000);
-  ms = Math.min(ms, (len / 70) * 1000);
-  return Math.min(6000, Math.max(1200, ms));
-}
 
 // Typewriter reveal — gives cached (real) outputs a live-streaming feel and works
 // on a static host. Renders instantly under prefers-reduced-motion.
@@ -155,26 +141,34 @@ function Bar({
   label,
   tuned,
   show,
+  delayMs = 0,
 }: {
   name: string;
   value: number;
   label: string;
   tuned?: boolean;
   show: boolean;
+  delayMs?: number;
 }) {
+  const fillStyle = {
+    width: `${value}%`,
+    transitionDelay: `${delayMs}ms`,
+  } as CSSProperties;
   return (
     <div className="bar-row">
       <span className="name">{name}</span>
       <div className="bar-track">
         <div
-          className={`bar-fill ${tuned ? "tuned" : "base"}`}
-          style={{ width: show ? `${value}%` : "0%" }}
+          className={`bar-fill ${tuned ? "tuned" : "base"} ${show ? "shown" : ""}`}
+          style={fillStyle}
         />
       </div>
       <span className="bar-val">{label}</span>
     </div>
   );
 }
+
+const enter = (ms: number): CSSProperties => ({ animationDelay: `${ms}ms` });
 
 export default function Home() {
   const [activeIdx, setActiveIdx] = useState(0);
@@ -206,87 +200,130 @@ export default function Home() {
   return (
     <div className="wrap">
       <header>
-        <div className="ghost" aria-hidden="true">
-          GRPO
+        <div className="hero-inner">
+          <div className="enter" style={enter(0)}>
+            <div className="bar" />
+            <div className="eyebrow">Forge · RL with verifiable rewards</div>
+          </div>
+          <h1 className="enter" style={enter(60)}>
+            Forged to <span className="hot">reason</span>
+          </h1>
+          <p className="enter" style={enter(140)}>
+            Qwen2.5-1.5B, heat-treated with GRPO — reinforcement learning against a math checker,
+            the DeepSeek-R1 technique — on a single 8GB RTX 5060. Watch the cold base model and the
+            forged model solve the same problem, side by side.
+          </p>
         </div>
-        <div className="bar" />
-        <div className="eyebrow">Forge — RL with verifiable rewards</div>
-        <h1>
-          Teaching a 1.5B model to reason with <span className="tag">GRPO</span>
-        </h1>
-        <p>
-          Qwen2.5-1.5B trained with reinforcement learning (verifiable rewards, the DeepSeek-R1
-          technique) on a single 8GB RTX 5060. Watch the base model and the GRPO-tuned model solve
-          the same problem, side by side.
-        </p>
+
+        <div className="statbar">
+          <div className="stat hero enter" style={enter(220)}>
+            <div className="k">GSM8K pass@1</div>
+            <div className="v">
+              58.8% <span className="arrow">→</span> <span className="hot">70.0%</span>{" "}
+              <small className="delta">+11.2 pts</small>
+            </div>
+          </div>
+          <div className="stat enter" style={enter(280)}>
+            <div className="k">Forgetting (ARC)</div>
+            <div className="v">
+              69.5 → 68.5 <small>≈flat</small>
+            </div>
+          </div>
+          <div className="stat enter" style={enter(340)}>
+            <div className="k">Train time</div>
+            <div className="v">
+              86 min <small>3.64 GiB</small>
+            </div>
+          </div>
+          <div className="stat enter" style={enter(400)}>
+            <div className="k">Served</div>
+            <div className="v">
+              228 <small>tok/s</small>
+            </div>
+          </div>
+        </div>
       </header>
 
-      <div className="statbar">
-        <div className="stat hero">
-          <div className="k">GSM8K pass@1</div>
-          <div className="v">
-            58.8% <span className="arrow">→</span> 70.0% <small className="delta">+11.2 pts</small>
-          </div>
-        </div>
-        <div className="stat"><div className="k">Forgetting (ARC)</div><div className="v">69.5 → 68.5 <small>≈flat</small></div></div>
-        <div className="stat"><div className="k">Train time</div><div className="v">86 min <small>3.64 GiB</small></div></div>
-        <div className="stat"><div className="k">Served</div><div className="v">228 <small>tok/s</small></div></div>
-      </div>
-
-      <div className="picker">
-        {EXAMPLES.map((e, i) => (
-          <button
-            key={i}
-            className={`ex-card ${i === activeIdx ? "active" : ""}`}
-            onClick={() => run(i)}
-            disabled={running}
-          >
-            <span className="ex-num">{String(i + 1).padStart(2, "0")}</span>
-            <span className="ex-body">
-              <span className="ex-q">
-                {e.question.trim().length > 96
-                  ? e.question.trim().slice(0, 96).trim() + "…"
-                  : e.question.trim()}
+      <section>
+        <div className="sec-label">01 · Pick a problem</div>
+        <div className="picker">
+          {EXAMPLES.map((e, i) => (
+            <button
+              key={i}
+              className={`ex-card ${i === activeIdx ? "active" : ""}`}
+              onClick={() => run(i)}
+              disabled={running}
+            >
+              <span className="ex-num">{String(i + 1).padStart(2, "0")}</span>
+              <span className="ex-body">
+                <span className="ex-q">
+                  {e.question.trim().length > 96
+                    ? e.question.trim().slice(0, 96).trim() + "…"
+                    : e.question.trim()}
+                </span>
+                {i === activeIdx && (
+                  <span className="ex-replay">{running ? "solving…" : "↻ replay"}</span>
+                )}
               </span>
-              {i === activeIdx && <span className="ex-replay">{running ? "solving…" : "↻ replay"}</span>}
-            </span>
-          </button>
-        ))}
-      </div>
-      <div className="mode">
-        Replaying <b>real cached outputs</b> from both models (generated offline so this page always
-        works). Point <code>FORGE_FALLBACK_URL</code> at a live endpoint for on-the-fly inference.
-      </div>
-
-      <div className="grid">
-        <ModelColumn kind="base" out={active?.models.base ?? null} streaming={base} gold={active?.gold ?? ""} />
-        <ModelColumn kind="tuned" out={active?.models.tuned ?? null} streaming={tuned} gold={active?.gold ?? ""} />
-      </div>
-
-      <div className="verdictbar">
-        {settled ? (
-          <div className="verdict">
-            <VerdictChip label="Base" out={active!.models.base} />
-            <VerdictChip label="GRPO-tuned" out={active!.models.tuned} />
-            <span className="gold">gold answer: {active!.gold}</span>
-          </div>
-        ) : (
-          <div className="verdict pending">solving…</div>
-        )}
-        <div className="tally">
-          Base {BASE_WINS}/{EXAMPLES.length} · GRPO-tuned {TUNED_WINS}/{EXAMPLES.length} on these
-          examples
+            </button>
+          ))}
         </div>
-      </div>
+        <div className="mode">
+          Replaying <b>real cached outputs</b> from both models (generated offline so this page
+          always works). Point <code>FORGE_FALLBACK_URL</code> at a live endpoint for on-the-fly
+          inference.
+        </div>
+      </section>
 
-      <div className="results" ref={results.ref}>
-        <div className="bar" />
-        <h2>The proof</h2>
+      <section>
+        <div className="sec-label">02 · Side by side</div>
+        <div className="grid">
+          <ModelColumn
+            kind="base"
+            out={active?.models.base ?? null}
+            streaming={base}
+            gold={active?.gold ?? ""}
+          />
+          <ModelColumn
+            kind="tuned"
+            out={active?.models.tuned ?? null}
+            streaming={tuned}
+            gold={active?.gold ?? ""}
+          />
+        </div>
+
+        <div className="verdictbar">
+          {settled ? (
+            <div className="verdict">
+              <VerdictChip label="Base" out={active!.models.base} />
+              <VerdictChip label="GRPO-tuned" out={active!.models.tuned} />
+              <span className="gold">gold answer: {active!.gold}</span>
+            </div>
+          ) : (
+            <div className="verdict pending">solving…</div>
+          )}
+          <div className="tally">
+            Base {BASE_WINS}/{EXAMPLES.length} · GRPO-tuned {TUNED_WINS}/{EXAMPLES.length} on these
+            examples
+          </div>
+        </div>
+      </section>
+
+      <section className="results" ref={results.ref}>
+        <div className="sec-label">03 · The proof</div>
+        <h2>Cold metal vs. forged</h2>
         <div className="resgrid">
           <div className="card">
             <h4>GSM8K pass@1 (1,319 held-out problems)</h4>
             <Bar name="Base" value={58.8} label="58.8%" show={results.inView} />
-            <Bar name="GRPO-tuned" value={70} label="70.0%" tuned show={results.inView} />
+            <Bar
+              name="GRPO-tuned"
+              value={70}
+              label="70.0%"
+              tuned
+              show={results.inView}
+              delayMs={90}
+            />
             <p className="caption">
               +11.2 points from RL alone — no supervised fine-tuning, no human labels, just a math
               checker as the reward.
@@ -295,18 +332,29 @@ export default function Home() {
           <div className="card">
             <h4>Forgetting check — ARC-Challenge (200 questions)</h4>
             <Bar name="Base" value={69.5} label="69.5%" show={results.inView} />
-            <Bar name="GRPO-tuned" value={68.5} label="68.5%" tuned show={results.inView} />
+            <Bar
+              name="GRPO-tuned"
+              value={68.5}
+              label="68.5%"
+              tuned
+              show={results.inView}
+              delayMs={90}
+            />
             <p className="caption">
               −1.0 pt, within noise — math RL did not degrade general reasoning.
             </p>
           </div>
           <div className="card span">
             <h4>Reward climbing during training (750 steps)</h4>
-            <img className="curve" src="/reward_curve.png" alt="GRPO reward curve" />
+            <img
+              className="curve"
+              src="/reward_curve.png"
+              alt="GRPO training curves: mean group reward rising from 1.23 to 2.80 over 750 steps, with completion length and KL below"
+            />
             <p className="caption">Mean group reward 1.23 → 2.80 (of 3.25) over 750 steps.</p>
           </div>
         </div>
-      </div>
+      </section>
 
       <footer>
         Base {BASE_WINS}/{EXAMPLES.length} vs GRPO-tuned {TUNED_WINS}/{EXAMPLES.length} on the
