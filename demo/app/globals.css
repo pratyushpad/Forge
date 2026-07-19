@@ -95,6 +95,7 @@ textarea:focus-visible {
 }
 .wordmark {
   display: flex;
+  flex: 0 0 auto;
   align-items: center;
   gap: 10px;
   font-family: var(--font-display);
@@ -1029,8 +1030,26 @@ footer a {
 @media (max-width: 720px) {
   .wrap { padding: 0 20px 64px; }
   header { margin: 0 -20px; padding: 48px 20px 0; }
-  .sitenav-inner { padding: 0 20px; }
-  .navlink { padding: 18px 8px; letter-spacing: 0.1em; }
+  /* Five links don't fit at 375. The body clips horizontal overflow, so without
+     this the last routes would be unreachable rather than merely off-screen —
+     the strip scrolls on its own instead. */
+  .sitenav-inner { padding: 0 20px; gap: 12px; }
+  .navlinks {
+    flex: 1 1 auto;
+    justify-content: flex-start;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .navlinks::-webkit-scrollbar { display: none; }
+  .navlink {
+    padding: 18px 7px;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    white-space: nowrap;
+  }
+  .navlink.active::after { left: 7px; right: 7px; }
   .pg-actions { align-items: flex-start; flex-direction: column; gap: 10px; }
   .pg-go { width: 100%; }
   .rewardlist li { grid-template-columns: 12px 1fr auto; row-gap: 4px; }
