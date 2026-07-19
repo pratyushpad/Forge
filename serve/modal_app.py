@@ -85,6 +85,8 @@ def serve():
         "16",  # QLoRA was trained at r=16
         "--max-model-len",
         str(MAX_MODEL_LEN),
+        "--dtype",
+        "half",  # T4 (compute 7.5) has no bfloat16; fp16 is fine for 1.5B inference
         "--enforce-eager",  # skip CUDA-graph compile: faster cold start on a small GPU
         "--api-key",
         api_key,  # requests must send Authorization: Bearer <FORGE_API_KEY>
