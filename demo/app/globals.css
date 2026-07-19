@@ -451,7 +451,14 @@ h2 {
   line-height: 1;
   font-variant-numeric: tabular-nums;
 }
-.answer .val.pending { color: var(--smoke); }
+/* Placeholder, not a value — mono keeps the ellipsis light instead of rendering
+   as three heavy blocks in the display face. */
+.answer .val.pending {
+  color: var(--smoke);
+  font-family: var(--font-mono);
+  font-size: 28px;
+  letter-spacing: 0.1em;
+}
 .val.ok { color: var(--ok); }
 .val.bad { color: var(--bad); }
 .mark {

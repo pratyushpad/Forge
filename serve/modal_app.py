@@ -39,6 +39,13 @@ SCALEDOWN_IDLE_S = 60  # spin down after 1 min idle -> $0 when nobody's using it
 # visitor pausing >1 min between questions triggers another cold start. Good
 # balance for a low-traffic portfolio demo on a tight budget.)
 STARTUP_TIMEOUT_S = 600  # cold start budget (model load + engine warmup)
+# Hard ceiling on GPUs. Without this Modal autoscales on load, so a burst (or
+# someone deliberately hammering the public demo) fans out across N T4s and
+# multiplies the burn rate by N. Capped at 1: traffic queues behind a single
+# GPU instead, which bounds the worst case to one GPU-hour per hour no matter
+# what arrives. A portfolio demo never needs concurrency more than it needs a
+# predictable bill.
+MAX_CONTAINERS = 1
 
 # --- Image: vLLM + base weights baked in so cold start is load-from-disk --
 def _download_base():
@@ -70,6 +77,7 @@ adapter_volume = modal.Volume.from_name("forge-adapter", create_if_missing=True)
     scaledown_window=SCALEDOWN_IDLE_S,  # older Modal: rename to container_idle_timeout
     timeout=STARTUP_TIMEOUT_S,
     min_containers=0,  # scale to zero when idle
+    max_containers=MAX_CONTAINERS,  # and never more than one GPU — see above
 )
 @modal.web_server(port=VLLM_PORT, startup_timeout=STARTUP_TIMEOUT_S)
 def serve():
