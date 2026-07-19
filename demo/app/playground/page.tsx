@@ -222,6 +222,11 @@ export default function Playground() {
           Served by <b>vLLM on Modal</b>, scale-to-zero — the container sleeps after a minute idle,
           so the first request pays a cold start. If the endpoint can&apos;t be reached, the six
           graded problems fall back to their <b>recorded</b> outputs rather than showing nothing.
+          <br />
+          These are live single runs, so a model can land a problem here that it missed in the
+          recorded set on the overview page. The headline{" "}
+          <b>58.8% → 70.0%</b> comes from the full 1,319-problem held-out eval, not from anything
+          on this page.
         </div>
       </section>
     </div>
