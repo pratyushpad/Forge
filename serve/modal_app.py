@@ -34,7 +34,10 @@ BASE_MODEL = "Qwen/Qwen2.5-1.5B-Instruct"
 GPU = "T4"  # cheapest that fits; bump to "L4" or "A10G" for faster decode
 MAX_MODEL_LEN = 2048  # keeps the KV cache small enough for a 16GB T4
 VLLM_PORT = 8000
-SCALEDOWN_IDLE_S = 300  # spin down after 5 min idle -> $0 when nobody's using it
+SCALEDOWN_IDLE_S = 60  # spin down after 1 min idle -> $0 when nobody's using it
+# (was 300; 60s cuts the billed idle tail after each request ~5x. Trade-off: a
+# visitor pausing >1 min between questions triggers another cold start. Good
+# balance for a low-traffic portfolio demo on a tight budget.)
 STARTUP_TIMEOUT_S = 600  # cold start budget (model load + engine warmup)
 
 # --- Image: vLLM + base weights baked in so cold start is load-from-disk --
