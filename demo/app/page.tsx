@@ -105,7 +105,9 @@ function ModelColumn({
             </span>
           </>
         ) : (
-          <span className="val pending">…</span>
+          <span className="val pending" aria-hidden="true">
+            &nbsp;
+          </span>
         )}
       </div>
     </div>

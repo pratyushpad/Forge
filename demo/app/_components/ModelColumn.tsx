@@ -105,7 +105,11 @@ export default function ModelColumn({
             )}
           </>
         ) : (
-          <span className="val pending">…</span>
+          // No placeholder glyph — but the row still reserves its height so the
+          // column doesn't jump when the real answer lands.
+          <span className="val pending" aria-hidden="true">
+            &nbsp;
+          </span>
         )}
       </div>
     </div>
