@@ -56,8 +56,22 @@ says so in as many words.
 - **README** — leads with the live playground and maps all five routes.
 
 ### Genuinely open (small, ranked)
-1. **Visual verification.** Every page was code-reviewed and content-verified via curl.
-   Do a real pass at 375 / 768 / 1440 across all five routes. **Top of the list.**
+1. ~~**Visual verification.**~~ **Done 2026-07-19.** All five routes were rendered and
+   inspected at 375 / 768 / 1440. One real bug found and fixed (`868fad7`): the nav
+   overflowed the viewport at 375 on every page, and because `body` sets
+   `overflow-x: clip` the overflow was *clipped rather than scrollable*, making
+   `/results` and `/traces` unreachable on a phone. The link strip now scrolls on its
+   own axis at ≤720. Production verified clean at 375 on all five routes.
+
+   Two things that looked like bugs and were **not** — don't re-chase them:
+   - Screenshots taken without a settle delay catch the staggered entrance mid-flight
+     (empty stat bar, ghost headline). Use `--wait-for-timeout=9000`.
+   - `RevealBars` appear unfilled if you jump-scroll with `window.scrollTo`; the
+     IntersectionObserver never sees the intermediate sections. Scroll gradually.
+
+   Remaining is taste, not correctness: the `.val.pending` ellipsis is a single U+2026
+   in Archivo Black, whose ultra-heavy dots read as blocks — legible, but switching it
+   to `var(--font-mono)` would sit better as a placeholder. Judgment call, left alone.
 
    > **The plain `claude mcp add playwright -- npx @playwright/mcp@latest` does NOT
    > work on this machine.** There is no system Node, and `which npx` resolves to the
