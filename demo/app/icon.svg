@@ -1,30 +1,24 @@
-<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Forge">
+<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Forge">
   <!--
-    Forge favicon. An angular, blade-cut "F" monogram (original work, inspired by
-    geometric esports-style lettermarks) in the Molten Industrial system: the
-    wordmark's heat gradient (--ember-deep -> --ember -> --glow), hotter toward
-    the top like heated metal, on a coal->iron tile. Vector paths only (no web
-    font) so it stays crisp at 16px in the browser tab. The arm ends are cut on a
-    45 deg blade and the stem has a chamfered foot for the angular, forged look.
+    Forge favicon. A bold angular "F" monogram (original work, in the style of
+    geometric interlaced lettermarks) drawn white on a coal->iron tile to echo
+    the reference mark, with 45-degree blade-cut arm ends and a pointed stem
+    foot. Solid fills (not thin line-art) so it stays legible at 16px in a tab.
+    The full interlaced/ribbon logo belongs at large sizes (site header / OG).
   -->
   <defs>
-    <linearGradient id="tile" x1="16" y1="0" x2="16" y2="32" gradientUnits="userSpaceOnUse">
+    <linearGradient id="tile" x1="20" y1="0" x2="20" y2="40" gradientUnits="userSpaceOnUse">
       <stop offset="0" stop-color="#1c1815"/>
       <stop offset="1" stop-color="#0c0a09"/>
     </linearGradient>
-    <linearGradient id="heat" x1="16" y1="25" x2="16" y2="7" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#993000"/>
-      <stop offset="0.55" stop-color="#ef5411"/>
-      <stop offset="1" stop-color="#ffa766"/>
-    </linearGradient>
   </defs>
 
-  <rect x="0.5" y="0.5" width="31" height="31" rx="7" fill="url(#tile)" stroke="#2c251f"/>
+  <rect x="1" y="1" width="38" height="38" rx="9" fill="url(#tile)" stroke="#2c251f"/>
 
-  <!-- Angular F: chamfered stem + two blade-cut arms, one continuous heat gradient -->
-  <g fill="url(#heat)">
-    <path d="M9 7 H14 V25 H11 L9 23 Z"/>
-    <path d="M9 7 H24 L19.5 11.8 H9 Z"/>
-    <path d="M9 14.4 H20 L15.5 19.2 H9 Z"/>
+  <!-- Bold angular F: chamfered stem with a pointed foot + two blade-cut arms -->
+  <g fill="#f5efe9">
+    <path d="M11 9 H17 V27 L14 31 L11 27 Z"/>
+    <path d="M11 9 H30 L24 16 H11 Z"/>
+    <path d="M11 19 H26 L20 25 H11 Z"/>
   </g>
 </svg>
