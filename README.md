@@ -6,9 +6,9 @@ fine-tuning — on a single RTX 5060 (8GB).** It lifts GSM8K pass@1 from **58.8%
 70.0%** with no measured loss of general ability, then quantizes and serves the
 result behind one interface with a hosted fallback.
 
-## ▶ Live demo — [forge-iota-coral.vercel.app](https://forge-iota-coral.vercel.app)
+## ▶ Live demo — [forge-grpo.vercel.app](https://forge-grpo.vercel.app)
 
-The [**playground**](https://forge-iota-coral.vercel.app/playground) runs **real inference on a
+The [**playground**](https://forge-grpo.vercel.app/playground) runs **real inference on a
 live GPU**: type any grade-school math problem and watch the stock base model and the GRPO-tuned
 adapter answer it side by side, streaming. Both are served from a single vLLM process via
 multi-LoRA — the same 73MB adapter the training run produced, not a merged copy. It scales to
@@ -17,11 +17,11 @@ start.
 
 | page | what's there |
 |---|---|
-| [`/`](https://forge-iota-coral.vercel.app) | the headline result and a side-by-side sample |
-| [`/playground`](https://forge-iota-coral.vercel.app/playground) | live base-vs-tuned inference on a problem you type |
-| [`/method`](https://forge-iota-coral.vercel.app/method) | GRPO in plain terms, the reward stack, and the cold-start bug |
-| [`/results`](https://forge-iota-coral.vercel.app/results) | every figure with the committed file it came from |
-| [`/traces`](https://forge-iota-coral.vercel.app/traces) | full reasoning traces — including the problem both models miss |
+| [`/`](https://forge-grpo.vercel.app) | the headline result and a side-by-side sample |
+| [`/playground`](https://forge-grpo.vercel.app/playground) | live base-vs-tuned inference on a problem you type |
+| [`/method`](https://forge-grpo.vercel.app/method) | GRPO in plain terms, the reward stack, and the cold-start bug |
+| [`/results`](https://forge-grpo.vercel.app/results) | every figure with the committed file it came from |
+| [`/traces`](https://forge-grpo.vercel.app/traces) | full reasoning traces — including the problem both models miss |
 
 > **RL across domains.** This is the LLM half of a pair: **PPO** for robotic
 > manipulation (99% target-reach, TCS Medical Robotics) and **GRPO** for LLM
