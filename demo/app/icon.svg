@@ -1,18 +1,18 @@
 <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Forge">
   <!--
-    Forge favicon. An "F" monogram in the Molten Industrial system: the same
-    heat gradient as the wordmark bar (--ember-deep -> --ember -> --glow),
-    hotter toward the top like heated metal, on a coal->iron tile. Drawn as
-    vector rects (no web font) so it stays crisp at 16px in the browser tab.
+    Forge favicon. An angular, blade-cut "F" monogram (original work, inspired by
+    geometric esports-style lettermarks) in the Molten Industrial system: the
+    wordmark's heat gradient (--ember-deep -> --ember -> --glow), hotter toward
+    the top like heated metal, on a coal->iron tile. Vector paths only (no web
+    font) so it stays crisp at 16px in the browser tab. The arm ends are cut on a
+    45 deg blade and the stem has a chamfered foot for the angular, forged look.
   -->
   <defs>
     <linearGradient id="tile" x1="16" y1="0" x2="16" y2="32" gradientUnits="userSpaceOnUse">
       <stop offset="0" stop-color="#1c1815"/>
       <stop offset="1" stop-color="#0c0a09"/>
     </linearGradient>
-    <!-- Shared across all three strokes of the F (userSpaceOnUse), so the
-         gradient runs continuously up the whole glyph, not per-rect. -->
-    <linearGradient id="heat" x1="16" y1="25.5" x2="16" y2="6.5" gradientUnits="userSpaceOnUse">
+    <linearGradient id="heat" x1="16" y1="25" x2="16" y2="7" gradientUnits="userSpaceOnUse">
       <stop offset="0" stop-color="#993000"/>
       <stop offset="0.55" stop-color="#ef5411"/>
       <stop offset="1" stop-color="#ffa766"/>
@@ -21,10 +21,10 @@
 
   <rect x="0.5" y="0.5" width="31" height="31" rx="7" fill="url(#tile)" stroke="#2c251f"/>
 
-  <!-- F: stem + top arm + middle arm, unioned under one continuous heat gradient -->
+  <!-- Angular F: chamfered stem + two blade-cut arms, one continuous heat gradient -->
   <g fill="url(#heat)">
-    <rect x="9" y="6.5" width="5" height="19" rx="1"/>
-    <rect x="9" y="6.5" width="15" height="5" rx="1"/>
-    <rect x="9" y="14" width="11" height="4.5" rx="1"/>
+    <path d="M9 7 H14 V25 H11 L9 23 Z"/>
+    <path d="M9 7 H24 L19.5 11.8 H9 Z"/>
+    <path d="M9 14.4 H20 L15.5 19.2 H9 Z"/>
   </g>
 </svg>
