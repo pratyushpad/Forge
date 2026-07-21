@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 
-const BASE = "https://forge-iota-coral.vercel.app";
+const BASE = "https://forge-grpo.vercel.app";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return ["", "/playground", "/method", "/results", "/traces"].map((path) => ({

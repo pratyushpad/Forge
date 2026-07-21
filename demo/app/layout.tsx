@@ -13,7 +13,7 @@ const inter = Inter_Tight({ subsets: ["latin"], variable: "--font-sans", display
 const jetbrainsMono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-mono", display: "swap" });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://forge-iota-coral.vercel.app"),
+  metadataBase: new URL("https://forge-grpo.vercel.app"),
   title: "Forge — GRPO reasoning, base vs tuned",
   description:
     "Qwen2.5-1.5B taught to reason with GRPO on an 8GB GPU. Compare the base model against the GRPO-tuned model side by side on grade-school math.",
