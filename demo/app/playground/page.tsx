@@ -18,7 +18,7 @@ const IDLE: Side = { phase: "idle", raw: "" };
 
 function describeError(err: unknown): string {
   if (err instanceof StreamError) {
-    if (err.status === 429) return "Rate limit reached — wait a minute and try again.";
+    if (err.status === 429) return "Rate limit reached. Wait a minute and try again.";
     if (err.status === 503) return "No live endpoint is configured for this deployment.";
     return err.message;
   }
@@ -77,7 +77,7 @@ export default function Playground() {
               set({
                 phase: "cached",
                 raw: cached.raw,
-                note: "Live endpoint unreachable — replaying this model's recorded output.",
+                note: "Live endpoint unreachable. Replaying this model's recorded output.",
               });
             } else {
               set({ phase: "error", raw: "", note: describeError(err) });
@@ -89,7 +89,7 @@ export default function Playground() {
       if (!ac.signal.aborted) {
         if (fallbacks.length) {
           setBanner(
-            "The GPU endpoint didn't answer, so this problem fell back to the recorded run. Try again in a moment — it scales to zero and may still be waking.",
+            "The GPU endpoint didn't answer, so this problem fell back to the recorded run. Try again in a moment; it scales to zero and may still be waking.",
           );
         }
         setRunning(false);
@@ -204,7 +204,7 @@ export default function Playground() {
                     ? `models disagree · base ${baseAns} vs tuned ${tunedAns}`
                     : agree
                       ? `models agree · ${baseAns}`
-                      : "no gold answer for a typed problem — both outputs shown ungraded"}
+                      : "no gold answer for a typed problem, both outputs shown ungraded"}
                 </span>
               </div>
             )
@@ -214,12 +214,12 @@ export default function Playground() {
           <div className="tally">
             {gold
               ? "graded against the recorded gold answer"
-              : "typed problems are ungraded — no ground truth to check against"}
+              : "typed problems are ungraded, with no ground truth to check against"}
           </div>
         </div>
 
         <div className="mode">
-          Served by <b>vLLM on Modal</b>, scale-to-zero — the container sleeps after a minute idle,
+          Served by <b>vLLM on Modal</b>, scale-to-zero: the container sleeps after a minute idle,
           so the first request pays a cold start. If the endpoint can&apos;t be reached, the six
           graded problems fall back to their <b>recorded</b> outputs rather than showing nothing.
           <br />

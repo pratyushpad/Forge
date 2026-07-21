@@ -5,7 +5,7 @@ project: everything built, everything measured, how the live endpoint actually
 behaves, and what's genuinely left. It is self-contained — you should not need any
 other file to get oriented — but it points to the deeper docs where useful.
 
-- **Repo:** `/home/praty/forge` — public: https://github.com/pratyushpad/Forge
+- **Repo:** `~/forge` (public: https://github.com/pratyushpad/Forge)
 - **Live site:** https://forge-iota-coral.vercel.app — **five pages, real GPU
   inference.** Not cached-only anymore.
 - **Status:** the project is **feature-complete**. Both original milestones (live
@@ -80,8 +80,8 @@ says so in as many words.
    > `#!/usr/bin/env node` shebang still needs `node` on PATH. Use both:
    > ```
    > claude mcp add playwright \
-   >   --env PATH=/home/praty/miniconda3/envs/node/bin:/usr/local/bin:/usr/bin:/bin \
-   >   -- /home/praty/miniconda3/envs/node/bin/npx --yes @playwright/mcp@latest
+   >   --env PATH=$HOME/miniconda3/envs/node/bin:/usr/local/bin:/usr/bin:/bin \
+   >   -- $HOME/miniconda3/envs/node/bin/npx --yes @playwright/mcp@latest
    > ```
    > Chromium **is already downloaded** (`~/.cache/ms-playwright/`, headless shell
    > 149) and **verified to launch** on this WSL box — no missing system libs, no sudo
@@ -177,7 +177,7 @@ Established `a06c626` (full note in the user's memory `forge-demo-design-system.
 
 ## §5 — The live endpoint (deployed — read before touching `/api/generate`)
 
-**Endpoint:** `https://pratyushpad--forge-vllm-serve.modal.run`
+**Endpoint:** `https://<you>--forge-vllm-serve.modal.run`
 **OpenAI base URL:** that **+ `/v1`**
 **Model ids:** exactly `base` and `tuned` — send those literal strings.
 

@@ -18,14 +18,14 @@ export default function Results() {
         <h2>Every number, and where it came from</h2>
         <p className="pg-lede">
           All evaluation is greedy (temperature=0) at seed 3407, on data the model never trained on.
-          Each figure below is read off a JSON file committed under <code>eval/results/</code> — the
+          Each figure below is read off a JSON file committed under <code>eval/results/</code>. The
           scripts that produced them are in the repo and rerunnable.
         </p>
       </section>
 
       <section>
         <div className="sec-label">01 · The headline</div>
-        <h3 className="prose-h">GSM8K pass@1 — full 1,319-problem held-out set</h3>
+        <h3 className="prose-h">GSM8K pass@1, full 1,319-problem held-out set</h3>
         <div className="card">
           <h4>Lenient scoring (last number in the output)</h4>
           <RevealBars
@@ -35,7 +35,7 @@ export default function Results() {
             ]}
           />
           <p className="caption">
-            <b>+11.2 points</b> from reinforcement learning alone — no supervised fine-tuning, no
+            <b>+11.2 points</b> from reinforcement learning alone, no supervised fine-tuning, no
             human labels.
           </p>
         </div>
@@ -70,10 +70,10 @@ export default function Results() {
         <p className="caption">
           The gap column is the quiet result. <b>Strict</b> requires a parseable{" "}
           <code>&lt;answer&gt;</code> block; <b>lenient</b> falls back to grabbing the last number in
-          the output. The base model loses 4.47 points to formatting alone — problems it solved but
+          the output. The base model loses 4.47 points to formatting alone: problems it solved but
           couldn&apos;t present. The tuned model scores <b>identically under both</b>, which is a
           direct measurement of 100% format compliance. Quoted honestly, the improvement is{" "}
-          <b>+11.2 points lenient</b> — the harder of the two comparisons. Strict-to-strict it is
+          <b>+11.2 points lenient</b>, the harder of the two comparisons. Strict-to-strict it is
           +15.6.
         </p>
       </section>
@@ -82,7 +82,7 @@ export default function Results() {
         <div className="sec-label">02 · The control</div>
         <h3 className="prose-h">Did math RL damage anything else?</h3>
         <div className="card">
-          <h4>ARC-Challenge, 200 questions — general reasoning, never trained on</h4>
+          <h4>ARC-Challenge, 200 questions of general reasoning, never trained on</h4>
           <RevealBars
             rows={[
               { name: "Base", value: 69.5, label: "69.5%" },
@@ -117,11 +117,11 @@ export default function Results() {
           </div>
           <div>
             <dt>KL to base</dt>
-            <dd>~0.05 — stayed close</dd>
+            <dd>~0.05 (stayed close)</dd>
           </div>
           <div>
             <dt>Completion length</dt>
-            <dd>flat ~180 tok — no length hacking</dd>
+            <dd>flat ~180 tok (no length hacking)</dd>
           </div>
           <div>
             <dt>Peak VRAM</dt>
@@ -130,7 +130,7 @@ export default function Results() {
         </dl>
         <p className="caption">
           Flat completion length matters more than it looks. The most common way an RL run cheats a
-          reward is by padding — rambling until something scoreable falls out. Length held steady
+          reward is by padding: rambling until something scoreable falls out. Length held steady
           while reward more than doubled, so the gain came from better reasoning, not more of it.
         </p>
       </section>
@@ -175,7 +175,7 @@ export default function Results() {
           Q4 costs about <b>7 points</b> of accuracy and buys <b>3.15× smaller</b> weights (0.93 GB).
           The f16 GGUF row is the control: it scores identically to fp16/vLLM, which proves the drop
           is <b>quantization</b> and not the CPU backend. At n=100 the 95% confidence interval is
-          roughly ±9 points, so treat the magnitude loosely — the direction is what&apos;s solid.
+          roughly ±9 points, so treat the magnitude loosely. The direction is what&apos;s solid.
         </p>
       </section>
 
@@ -208,7 +208,7 @@ export default function Results() {
         </div>
         <p className="caption">
           These measure different things and the winner flips depending on which you need. vLLM
-          answers <b>7× faster</b> on first token and scales to 674 tok/s under batching — the right
+          answers <b>7× faster</b> on first token and scales to 674 tok/s under batching, the right
           call for serving many users. Ollama Q4 decodes a <b>single</b> stream more than twice as
           fast. The live playground runs vLLM, because first-token latency is what a visitor
           actually feels.

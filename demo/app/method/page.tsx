@@ -61,14 +61,14 @@ export default function Method() {
           </p>
           <p>
             The interesting part is what&apos;s <em>missing</em>. Classic PPO needs a second network
-            — a learned critic — to estimate how good a state is, and that critic costs as much
+            (a learned critic) to estimate how good a state is, and that critic costs as much
             memory as the policy. GRPO throws it away: <b>the group average is the baseline</b>.
             That single substitution is what lets this run on one consumer card instead of a
             cluster, and it&apos;s the technique behind DeepSeek-R1.
           </p>
           <p>
             It also means the reward has to be <b>verifiable</b>. There&apos;s no human in the loop
-            and no model judging taste — just <code>answers_match(parsed, gold)</code>, a
+            and no model judging taste: just <code>answers_match(parsed, gold)</code>, a
             deterministic check. Grade-school math is a good fit precisely because correctness is
             decidable.
           </p>
@@ -79,7 +79,7 @@ export default function Method() {
         <div className="sec-label">02 · The reward function</div>
         <h3 className="prose-h">Four terms, {REWARD_MAX} points maximum</h3>
         <p className="prose-lede">
-          Correctness dominates by design — everything else is scaffolding that keeps the gradient
+          Correctness dominates by design. Everything else is scaffolding that keeps the gradient
           alive while the model is still learning to answer in a parseable shape.
         </p>
 
@@ -115,7 +115,7 @@ export default function Method() {
         <h3 className="prose-h">Right answers, zero reward, no gradient</h3>
         <div className="prose">
           <p>
-            The first smoke run produced <b>0 tagged completions out of 80</b>. Not 0% accuracy —
+            The first smoke run produced <b>0 tagged completions out of 80</b>. Not 0% accuracy:
             the base model was often doing the arithmetic correctly. It just ignored the format
             instruction and answered in prose.
           </p>
@@ -125,7 +125,7 @@ export default function Method() {
           <div className="callout-k">Why that is fatal to GRPO specifically</div>
           <p>
             The reward parser looks for an <code>&lt;answer&gt;</code> block. No block means no
-            parsed answer, which means reward 0 — for <em>every</em> completion in the group. And
+            parsed answer, which means reward 0, for <em>every</em> completion in the group. And
             when every member of a group scores identically, every advantage is zero, so the
             gradient is zero. The run wasn&apos;t learning slowly. It was a no-op burning GPU hours.
           </p>
@@ -172,7 +172,7 @@ export default function Method() {
           </div>
           <div>
             <dt>Sequence</dt>
-            <dd>1024 tok — 256 prompt / 768 completion</dd>
+            <dd>1024 tok (256 prompt / 768 completion)</dd>
           </div>
           <div>
             <dt>Run</dt>
@@ -194,7 +194,7 @@ export default function Method() {
         <p className="caption">
           Stack: TRL <code>GRPOTrainer</code> + Unsloth <code>FastLanguageModel</code>, with vLLM
           colocated for rollout generation, on an RTX 5060. Peak memory landed at just over half the
-          usable budget — the ceiling here was patience, not capacity.
+          usable budget. The ceiling here was patience, not capacity.
         </p>
       </section>
 
@@ -206,7 +206,7 @@ export default function Method() {
             meant to be. The claim is narrower and, I think, more interesting: <b>a measurable
             capability gain from reinforcement learning alone</b>, on hardware anyone can buy, with
             every number reproducible from a seeded script in the repo. The forgetting check on
-            ARC-Challenge is there for the same reason — it&apos;s the result that would have
+            ARC-Challenge is there for the same reason: it&apos;s the result that would have
             embarrassed the project if it had gone the other way.
           </p>
         </div>

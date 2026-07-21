@@ -12,19 +12,19 @@ export default function NotFound() {
         </p>
         <ul className="fail-links">
           <li>
-            <Link href="/">Overview</Link> — the headline result
+            <Link href="/">Overview</Link>, the headline result
           </li>
           <li>
-            <Link href="/playground">Playground</Link> — live base-vs-tuned inference
+            <Link href="/playground">Playground</Link>, live base-vs-tuned inference
           </li>
           <li>
-            <Link href="/method">Method</Link> — how GRPO works, and the bug worth reading about
+            <Link href="/method">Method</Link>, how GRPO works and the bug worth reading about
           </li>
           <li>
-            <Link href="/results">Results</Link> — every number with its source
+            <Link href="/results">Results</Link>, every number with its source
           </li>
           <li>
-            <Link href="/traces">Traces</Link> — full reasoning, including the failures
+            <Link href="/traces">Traces</Link>, full reasoning including the failures
           </li>
         </ul>
       </section>

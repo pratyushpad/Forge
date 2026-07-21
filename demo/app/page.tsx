@@ -163,8 +163,8 @@ export default function Home() {
             Forged to <span className="hot">reason</span>
           </h1>
           <p className="enter" style={enter(140)}>
-            Qwen2.5-1.5B, heat-treated with GRPO — reinforcement learning against a math checker,
-            the DeepSeek-R1 technique — on a single 8GB RTX 5060. Watch the cold base model and the
+            Qwen2.5-1.5B, heat-treated with GRPO (reinforcement learning against a math checker,
+            the DeepSeek-R1 technique) on a single 8GB RTX 5060. Watch the cold base model and the
             forged model solve the same problem, side by side.
           </p>
         </div>
@@ -292,7 +292,7 @@ export default function Home() {
             <span className="deep-k">Traces</span>
             <span className="deep-t">Read the reasoning</span>
             <span className="deep-d">
-              Unedited completions on held-out problems — including the one both models miss.
+              Unedited completions on held-out problems, including the one both models miss.
             </span>
           </Link>
         </div>

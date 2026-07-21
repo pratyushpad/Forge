@@ -21,9 +21,9 @@ export default function Error({
         <div className="fail-code">Error</div>
         <h2>That didn&apos;t hold heat</h2>
         <p className="prose">
-          Something broke rendering this page. The rest of the site is static and should still work
-          — and if you were on the playground, the GPU endpoint scales to zero, so a retry after a
-          moment often lands.
+          Something broke rendering this page. The rest of the site is static and should still work.
+          If you were on the playground, the GPU endpoint scales to zero, so a retry after a moment
+          often lands.
         </p>
         <div className="fail-actions">
           <button className="pg-go" onClick={reset}>

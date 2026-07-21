@@ -7,7 +7,7 @@ the data, the model results, the live site, and API security are intact.
 
 - **Last full verification:** 2026-07-18, commit `c0af1b2`, branch `main`.
 - **Result: ALL CHECKS PASS** (baseline snapshot below).
-- **Repo:** `/home/praty/forge` — public: https://github.com/pratyushpad/Forge
+- **Repo:** `~/forge` (public: https://github.com/pratyushpad/Forge)
 - **Live:** https://forge-iota-coral.vercel.app
 
 ## How to use this file

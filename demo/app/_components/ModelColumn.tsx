@@ -76,7 +76,7 @@ export default function ModelColumn({
       >
         {reasoning || (phase === "idle" ? <span className="muted">waiting for a problem…</span> : "")}
         {phase === "streaming" && <span className="cursor">▋</span>}
-        {phase === "waking" && <span className="muted">waking the GPU — first run can take ~90s…</span>}
+        {phase === "waking" && <span className="muted">waking the GPU, first run can take ~90s…</span>}
       </div>
 
       {note && <p className="colnote">{note}</p>}
