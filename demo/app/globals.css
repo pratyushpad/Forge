@@ -1,45 +1,30 @@
 /* ============================================================
-   Molten Industrial — Forge design tokens
-   Data colors validated (dataviz six checks): cold #5B85D6 / ember #EF5411
+   Molten Industrial — Forge stylesheet
+   Design tokens (colors/motion/fonts/spacing/type scale) live in
+   ./tokens.css, imported before this file — this sheet consumes
+   var(--...) only and declares no :root of its own.
+
+   Section index:
+     - base resets & global element defaults
+     - site nav
+     - hero (header, statbar, entrance choreography)
+     - sections & headings
+     - example picker
+     - side-by-side model columns (base vs tuned)
+     - verdict bar + tally
+     - results (bar charts, curve image)
+     - playground (form, seeds, banner)
+     - long-form prose (method / results / traces copy)
+     - reward stack bar + list
+     - callout + spec list
+     - data tables
+     - trace gallery
+     - "go deeper" cards
+     - error / not-found
+     - footer
+     - responsive breakpoints
+     - reduced-motion contract (hard accessibility requirement — keep last)
    ============================================================ */
-:root {
-  /* surfaces (warm, coal → iron → raised steel) */
-  --coal: #0c0a09;
-  --iron: #141110;
-  --raised: #1c1815;
-  --seam: #2c251f;
-  --seam-hover: #463a2f;
-
-  /* ink */
-  --ink: #f5efe9;
-  --ink-soft: #c7beb6;
-  --smoke: #95897e;
-
-  /* heat — brand + tuned series */
-  --ember: #ef5411;
-  --ember-deep: #993000;
-  --glow: #ffa766;
-  --heat: linear-gradient(90deg, var(--ember-deep), var(--ember) 55%, var(--glow));
-
-  /* cold — base series */
-  --cold: #5b85d6;
-
-  /* status — reserved, never reused for series or brand */
-  --ok: #4cc38a;
-  --bad: #f16969;
-
-  /* motion (mirrors lib/motion.ts) */
-  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
-  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
-  --dur-fast: 120ms;
-  --dur-base: 200ms;
-  --dur-slow: 600ms;
-
-  /* fallbacks — next/font variables on <body> override these */
-  --font-display: "Archivo Black", "Arial Black", sans-serif;
-  --font-sans: "Inter Tight", "Inter", system-ui, sans-serif;
-  --font-mono: "JetBrains Mono", ui-monospace, "Fira Code", monospace;
-}
 
 * { box-sizing: border-box; }
 html, body { margin: 0; padding: 0; }
@@ -105,8 +90,6 @@ textarea:focus-visible {
   color: var(--ink);
   text-decoration: none;
 }
-.wordmark-bar { width: 20px; height: 3px; background: var(--heat); }
-
 .navlinks {
   display: flex;
   align-items: center;
@@ -547,6 +530,7 @@ h2 {
   color: var(--smoke);
 }
 .bar-track {
+  position: relative; /* anchors the ghost marker */
   height: 14px;
   background: var(--raised);
   border: 1px solid var(--seam);
@@ -560,6 +544,17 @@ h2 {
 .bar-fill.shown { clip-path: inset(0 0 0 0); }
 .bar-fill.base { background: var(--cold); }
 .bar-fill.tuned { background: var(--heat); }
+/* faint cold marker at the base row's value, drawn behind the tuned fill so
+   the delta between "before" and "after" reads at a glance */
+.bar-ghost {
+  position: absolute;
+  top: 2px;
+  bottom: 2px;
+  width: 2px;
+  background: var(--cold);
+  opacity: 0.55;
+  z-index: 1;
+}
 .bar-val {
   font: 12px/1 var(--font-mono);
   font-variant-numeric: tabular-nums;
@@ -719,11 +714,14 @@ h2 {
   border: 1px solid var(--seam);
   padding: 2px;
 }
-.stackseg { min-width: 3px; }
+.stackseg { min-width: 3px; cursor: default; }
 .stackseg.ember, .swatch.ember { background: var(--ember); }
 .stackseg.glow,  .swatch.glow  { background: var(--glow); }
 .stackseg.deep,  .swatch.deep  { background: var(--ember-deep); }
 .stackseg.ash,   .swatch.ash   { background: var(--smoke); }
+/* hover-link with the legend below: a highlighted segment brightens in place
+   (filter, not size — the flex geometry never changes) */
+.stackseg.hi { filter: brightness(1.3); }
 
 .rewardlist { margin: 18px 0 0; padding: 0; list-style: none; }
 .rewardlist li {
@@ -733,7 +731,9 @@ h2 {
   gap: 12px;
   padding: 10px 0;
   border-top: 1px solid var(--seam);
+  transition: background-color var(--dur-base) var(--ease-out);
 }
+.rewardlist li.hi { background: var(--raised); }
 .swatch {
   width: 12px;
   height: 12px;
@@ -917,6 +917,12 @@ h2 {
 /* Panes hold full completions, so they size to content instead of the fixed
    scrolling height the live columns use. */
 .reasoning.trace-pane { height: auto; max-height: 420px; }
+/* Animated disclosure body (TraceDisclosure) — clips the height tween so
+   content never spills out mid-animation. The inner .grid keeps its own
+   margin-top (this wrapper adds none, to avoid doubling the gap under
+   .summary — overflow:hidden gives it its own block-formatting context, so
+   that child margin no longer collapses upward through it). */
+.trace-panel { overflow: hidden; }
 
 /* ---------- go deeper (home → the other routes) ---------- */
 .deeper {
@@ -1083,4 +1089,125 @@ footer a {
   }
   .cursor { animation: none; }
   .livedot { animation: none; }
+}
+
+/* ============================================================
+   FLAGSHIP HOME (Phase 1) — molten hero chrome, forged section
+   headers, the base-vs-tuned "strike", magnetic deep-cards.
+   Originally home-only; the forged section header (.forge-sec*)
+   and the strike chrome (.strike-flare/.strike-sparks/.spark/
+   .verdict.forge-stamp) are now shared with /playground (Phase 2)
+   via the extracted <ForgeSecLabel> and <ModelColumn> components.
+   Only the hero-specific rules (watermark, ignite chars) stay
+   home-only, since only the home page renders that markup.
+   ============================================================ */
+
+/* SplitText chars + the ignite word need a block box for transforms */
+.ignite-char { display: inline-block; will-change: transform; }
+/* word wrappers keep whole words intact so a char-split headline never breaks
+   mid-word when it wraps across lines */
+.ignite-word { display: inline-block; }
+
+/* Statbar on phones: the display-font values are white-space:nowrap, so their
+   min-content width forces a 2-up grid wider than the viewport and the 2nd
+   column clips under overflow-x:clip. Stack to one column so every value fits.
+   (Declared after the ≤800px 2-col rule so it wins on narrow screens.) */
+@media (max-width: 560px) {
+  .statbar { grid-template-columns: 1fr; }
+  .stat { border-left: none; padding-left: 0; border-top: 1px solid var(--seam); }
+  .stat:first-child { border-top: none; }
+}
+.hot { display: inline-block; }
+
+/* hero watermark — large forged-F outline behind the headline, drawn in on
+   load (PathDraw); paints above the molten canvas and beneath the scrim */
+.hero-watermark {
+  position: absolute;
+  top: 50%;
+  right: -3%;
+  width: min(48vw, 520px);
+  height: auto;
+  aspect-ratio: 1 / 1;
+  transform: translateY(-42%);
+  opacity: 0.14;
+  pointer-events: none;
+  overflow: visible;
+}
+@media (max-width: 720px) {
+  .hero-watermark { width: 70vw; right: -14%; opacity: 0.1; }
+}
+
+/* forged section header — replaces the shared .sec-label on the home only */
+.forge-sec {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
+}
+.forge-sec-rule { flex: 0 0 auto; overflow: visible; }
+.forge-sec-num {
+  font-family: var(--font-display);
+  font-size: 22px;
+  line-height: 1;
+  color: var(--ember);
+  letter-spacing: 0.01em;
+}
+.forge-sec-label {
+  font: 12px/1 var(--font-mono);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--smoke);
+}
+
+/* the strike — tuned column payoff. The GSAP timeline in page.tsx drives
+   opacity/x/y; CSS only sets the resting appearance. */
+.strike-flare {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(120% 90% at 22% 0%, rgba(239, 84, 17, 0.4), transparent 62%);
+  mix-blend-mode: screen;
+}
+.strike-sparks {
+  position: absolute;
+  top: 2px;
+  left: 30px;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+.spark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--glow);
+  box-shadow: 0 0 8px 1px rgba(255, 167, 102, 0.85);
+  opacity: 0;
+}
+/* verdict stamps in when the forged model lands the answer */
+.verdict.forge-stamp { animation: forge-stamp var(--dur-base) var(--ease-out); }
+@keyframes forge-stamp {
+  0% { transform: scale(0.96); opacity: 0.5; }
+  60% { transform: scale(1.015); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* magnetic deep-cards + hover heat glow */
+.deep-magnet { height: 100%; }
+.deep-card { position: relative; overflow: hidden; height: 100%; }
+.deep-k, .deep-t, .deep-d { position: relative; } /* keep copy above the glow */
+.deep-glow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(70% 60% at 50% 0%, rgba(239, 84, 17, 0.16), transparent 72%);
+  transition: opacity var(--dur-base) var(--ease-out);
+}
+@media (hover: hover) and (pointer: fine) {
+  .deep-card:hover .deep-glow { opacity: 1; }
 }

@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import ForgeMark from "./ForgeMark";
 
 const LINKS = [
   { href: "/", label: "Overview" },
@@ -18,7 +19,7 @@ export default function SiteNav() {
     <nav className="sitenav" aria-label="Primary">
       <div className="sitenav-inner">
         <Link href="/" className="wordmark">
-          <span className="wordmark-bar" aria-hidden="true" />
+          <ForgeMark size={22} heat />
           Forge
         </Link>
         <ul className="navlinks">

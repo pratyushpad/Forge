@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Archivo_Black, Inter_Tight, JetBrains_Mono } from "next/font/google";
 import SiteNav from "./_components/SiteNav";
+import "./tokens.css";
 import "./globals.css";
 
 const display = Archivo_Black({
@@ -34,7 +35,11 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className={`${display.variable} ${inter.variable} ${jetbrainsMono.variable}`}>
+      {/* suppressHydrationWarning: browser extensions (Grammarly, etc.) inject
+          data-* attributes onto <body> before React hydrates. This suppresses
+          the warning for body's own attributes only — real mismatches in the
+          tree below still surface. */}
+      <body suppressHydrationWarning className={`${display.variable} ${inter.variable} ${jetbrainsMono.variable}`}>
         <SiteNav />
         {children}
       </body>

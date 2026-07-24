@@ -1,0 +1,77 @@
+/* ============================================================
+   Molten Industrial — Forge design tokens
+   Single source of truth for all CSS custom properties. Imported
+   in layout.tsx BEFORE globals.css. Do not declare a second :root
+   block anywhere else in the app.
+
+   Data colors validated (dataviz six checks): cold #5B85D6 / ember #EF5411
+   ============================================================ */
+:root {
+  /* surfaces (warm, coal → iron → raised steel) */
+  --coal: #0c0a09;
+  --iron: #141110;
+  --raised: #1c1815;
+  --seam: #2c251f;
+  --seam-hover: #463a2f;
+
+  /* ink */
+  --ink: #f5efe9;
+  --ink-soft: #c7beb6;
+  --smoke: #95897e;
+
+  /* heat — brand + tuned series */
+  --ember: #ef5411;
+  --ember-deep: #993000;
+  --glow: #ffa766;
+  --heat: linear-gradient(90deg, var(--ember-deep), var(--ember) 55%, var(--glow));
+
+  /* cold — base series */
+  --cold: #5b85d6;
+
+  /* status — reserved, never reused for series or brand */
+  --ok: #4cc38a;
+  --bad: #f16969;
+
+  /* motion (mirrors lib/motion.ts) */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --dur-fast: 120ms;
+  --dur-base: 200ms;
+  --dur-slow: 600ms;
+
+  /* fallbacks — next/font variables on <body> override these */
+  --font-display: "Archivo Black", "Arial Black", sans-serif;
+  --font-sans: "Inter Tight", "Inter", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "Fira Code", monospace;
+
+  /* ---------- spacing scale (4px base) ---------- */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-7: 32px;
+  --space-8: 48px;
+  --space-9: 64px;
+  --space-10: 72px;
+  --space-11: 96px;
+
+  /* ---------- fluid type scale ----------
+     Values mirror what's already rendered by h1/h2/header p/eyebrow today, so
+     later phases can build new UI on these tokens instead of new magic
+     numbers. Existing selectors keep their literal values untouched (see
+     globals.css) — wiring them to these tokens is a later-phase migration,
+     not part of this foundation pass, to guarantee zero visual change now. */
+  --text-h1: clamp(44px, 7.5vw, 96px);
+  --text-h2: clamp(26px, 3.4vw, 40px);
+  --text-h3: clamp(17px, 2vw, 20px);
+  --text-body: 17px;
+  --text-eyebrow: 12px;
+
+  /* tracking (letter-spacing) tokens for the type scale above */
+  --tracking-display: -0.015em; /* h1 */
+  --tracking-heading: -0.01em; /* h2/h3 */
+  --tracking-label: 0.14em; /* eyebrow / mono labels — most-used value in the file */
+  --tracking-wide: 0.2em; /* rare, extra-loud labels (hero eyebrow) */
+}

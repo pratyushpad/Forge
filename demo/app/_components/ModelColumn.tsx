@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, type RefObject } from "react";
 import { answersMatch, cleanAnswer, extractAnswer, extractReasoning } from "../../lib/parse";
 
 export type Phase = "idle" | "waking" | "streaming" | "done" | "cached" | "error";
@@ -20,6 +20,9 @@ export default function ModelColumn({
   raw,
   gold,
   note,
+  colRef,
+  flareRef,
+  sparksRef,
 }: {
   kind: "base" | "tuned";
   phase: Phase;
@@ -27,6 +30,12 @@ export default function ModelColumn({
   /** Gold answer, when one is known (seed problems only). Null ⇒ render ungraded. */
   gold: string | null;
   note?: string;
+  /** Same "strike" chrome as the home page §02 columns — optional, only wired
+   *  up by callers (playground) that drive the GSAP hammer-pulse/flare/spark
+   *  timeline off these refs. Unused refs render inert, opacity-0 markup. */
+  colRef?: RefObject<HTMLDivElement | null>;
+  flareRef?: RefObject<HTMLSpanElement | null>;
+  sparksRef?: RefObject<HTMLSpanElement | null>;
 }) {
   const label = kind === "tuned" ? "GRPO-tuned" : "Base";
   const sub = kind === "tuned" ? "Qwen2.5-1.5B + GRPO" : "Qwen2.5-1.5B-Instruct";
@@ -52,7 +61,19 @@ export default function ModelColumn({
   const status = STATUS[phase];
 
   return (
-    <div className={`col ${kind}`}>
+    <div className={`col ${kind}`} ref={colRef}>
+      {kind === "tuned" && (
+        <>
+          {/* Strike payoff — transparent at rest; a caller-driven GSAP timeline
+              fires these once the tuned answer lands correct. */}
+          <span className="strike-flare" ref={flareRef} aria-hidden="true" />
+          <span className="strike-sparks" ref={sparksRef} aria-hidden="true">
+            {Array.from({ length: 7 }).map((_, i) => (
+              <span key={i} className="spark" />
+            ))}
+          </span>
+        </>
+      )}
       <h3>
         {label} <span className={`badge ${kind}`}>{sub}</span>
       </h3>
