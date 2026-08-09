@@ -1,0 +1,26 @@
+# Exact versions of the training/eval environment, as recorded in docs/PHASE0_ENV.md
+# (Phase 0 env snapshot, 2026-07-16 — that file now lives in git history, commit e09a321).
+# Box: RTX 5060 8GB (Blackwell sm_120), WSL2 Ubuntu, conda env "forge", Python 3.11.15.
+# torch is the PyPI cu128 build (sm_120 included); vLLM 0.19.1 pins torch 2.10.0
+# (it replaced an initially installed 2.11.0+cu128).
+# Import-order note: unsloth must be imported before transformers/trl (see train/train_grpo.py).
+
+accelerate==1.14.0
+bitsandbytes==0.49.2
+datasets==4.3.0
+flashinfer-python==0.6.6
+numpy==2.2.6
+peft==0.19.1
+torch==2.10.0
+torchaudio==2.10.0
+torchvision==0.25.0
+transformers==4.57.6
+triton==3.6.0
+trl==0.24.0
+unsloth==2026.7.3
+unsloth_zoo==2026.7.3
+vllm==0.19.1
+xformers==0.0.35
+
+# Test-only dependency (make test); its version was not recorded in the env snapshot.
+pytest

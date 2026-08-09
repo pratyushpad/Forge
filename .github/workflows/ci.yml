@@ -1,0 +1,25 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      # The reward-function unit tests need only pytest + datasets:
+      # train/rewards.py is pure stdlib, and data/gsm8k.py imports `datasets`
+      # at module level (no network at import time). The full GPU stack in
+      # requirements.txt (torch cu128 / unsloth / vllm) is neither installable
+      # nor needed on a CPU runner.
+      - name: Install test dependencies
+        run: pip install pytest "datasets==4.3.0"
+      - name: Run reward-function unit tests
+        run: python -m pytest tests/ -q

@@ -1,5 +1,7 @@
 # Forge — teaching a 1.5B model to reason with RL, on one 8GB GPU
 
+[![CI](https://github.com/pratyushpad/Forge/actions/workflows/ci.yml/badge.svg)](https://github.com/pratyushpad/Forge/actions/workflows/ci.yml)
+
 **Forge trains Qwen2.5-1.5B to solve math by reasoning — using GRPO (reinforcement
 learning with verifiable rewards, the DeepSeek-R1 technique), not supervised
 fine-tuning — on a single RTX 5060 (8GB).** It lifts GSM8K pass@1 from **58.8% →
@@ -38,6 +40,38 @@ start.
 Trained in **86 min**, **3.64 GiB peak VRAM**. Reward **1.23 → 2.80** / 3.25.
 
 ![reward curve](docs/reward_curve.png)
+
+## Baseline notes — what 58.8% actually is
+
+The 58.8% → 70.0% comparison is deliberately apples-to-apples at the training
+configuration, not a leaderboard reproduction:
+
+- **Both columns ran the same 4-bit weights.** The base and tuned evals load the
+  identical NF4-quantized checkpoint (`unsloth/qwen2.5-1.5b-instruct-unsloth-bnb-4bit`)
+  via vLLM — the same weights training used — with the same one-shot prompt, greedy
+  decoding, and seed 3407, over all 1,319 held-out test problems
+  ([`eval/eval_gsm8k.py`](eval/eval_gsm8k.py), results in
+  [`eval/results/gsm8k.json`](eval/results/gsm8k.json)). The only difference between
+  the columns is the LoRA adapter, so the delta measures GRPO — not a precision,
+  prompt, or harness change.
+- **58.8% is the lenient base score** (any final number in the output counts).
+  Scored strictly — the answer must sit inside the trained `<answer>` tags — the base
+  model gets 54.4%, because it doesn't reliably follow the format. The tuned model
+  scores 70.0% under both rules; identical strict/lenient means 100% format
+  compliance, nothing lost to parsing.
+- **Don't compare 58.8% to Qwen's published GSM8K figure.** Published numbers for
+  Qwen2.5-1.5B-Instruct come from a different protocol — full-precision weights and
+  few-shot CoT eval harnesses — and land higher than this quantized, fixed-format,
+  exact-match baseline. That's expected: the baseline here exists to isolate the
+  training effect under the training configuration, not to reproduce the
+  tech-report number.
+- **The gain survives leaving 4-bit.** The adapter merged to fp16 scores **0.76**
+  pass@1 on the first 100 held-out problems (vLLM/GPU), and the f16 GGUF agrees
+  exactly at 0.76
+  ([`eval/results/served_fp16_merged.json`](eval/results/served_fp16_merged.json),
+  [`export/QUANT_DELTA.md`](export/QUANT_DELTA.md)) — consistent with the 70.0%
+  full-set figure (n=100 ⇒ ±~9 pts at 95% CI), so the improvement is not an
+  artifact of the 4-bit eval path.
 
 ## Why GRPO (and why it's the interesting part)
 
