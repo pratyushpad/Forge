@@ -1,4 +1,4 @@
-# Phase 5 — Quantize + export: quality-vs-latency
+# Phase 5: Quantize + export: quality-vs-latency
 
 Artifacts produced from the GRPO LoRA adapter (`outputs/full/`):
 
@@ -22,24 +22,24 @@ Q4_K_M is **3.15× smaller** than f16 (2945 MiB → 935 MiB, 5.08 bits/weight).
 
 - **Quantization costs ~7 points pass@1** (0.76 → 0.69) on this 100-problem subset.
   The f16 GGUF and fp16/vLLM agree exactly (0.76), so the drop is attributable to
-  4-bit quantization, **not** the backend — a real, documented tradeoff. On a model
+  4-bit quantization, **not** the backend, a real, documented tradeoff. On a model
   this small (1.5B) 4-bit weights have less redundancy to spare, so Q4 quality loss
-  is larger than it would be on a 7B+. (n=100, so ±~9 pts at 95% CI — the sign is
+  is larger than it would be on a 7B+. (n=100, so ±~9 pts at 95% CI; the sign is
   reliable; treat the magnitude as "a few points," not exact.)
 - **Q4 is 1.7× faster than f16 on the same CPU** (21.1 vs 12.6 tok/s) and fits in
-  under 1 GB — the point of shipping it: it runs comfortably on CPU-only / low-VRAM
+  under 1 GB, the point of shipping it: it runs comfortably on CPU-only / low-VRAM
   boxes where f16 would not.
-- The GPU fp16 number (674 tok/s, single stream) is the throughput ceiling and the
+- The GPU fp16 number (674 tok/s aggregate, 100 prompts batched by vLLM) is the throughput ceiling and the
   Phase 6 serving headline; CPU GGUF numbers are the portable-fallback path.
 
-## AWQ — deliberately deferred (honest scope note)
+## AWQ: deliberately deferred (honest scope note)
 
 The plan listed AWQ as *optional* for a vLLM throughput headline. `autoawq` pulls
 torch/transformers pins that conflict with this box's Blackwell-specific stack
 (torch 2.10.0+cu128, sm_120), and perturbing the working training env is not worth
 the risk for a marginal throughput gain. Phase 6 instead serves the **merged fp16
-via vLLM on GPU** (already measured at 674 tok/s single-stream) for the headline and
-**Q4_K_M via Ollama** for the reliable CPU/low-VRAM path — two real numbers, zero
+via vLLM on GPU** (already measured at 674 tok/s aggregate over 100 batched prompts; 105 tok/s single stream) for the headline and
+**Q4_K_M via Ollama** for the reliable CPU/low-VRAM path: two real numbers, zero
 env risk. AWQ can be revisited later in an isolated env if a batched-throughput
 number is wanted.
 

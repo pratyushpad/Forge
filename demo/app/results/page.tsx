@@ -146,6 +146,10 @@ export default function Results() {
             a reward is by padding: rambling until something scoreable falls out. Length held steady
             while reward more than doubled, so the gain came from better reasoning, not more of it.
           </p>
+          <p className="caption">
+            Training figures come from the run&apos;s log on the training machine; the plot above is
+            the committed <code>docs/reward_curve.png</code>.
+          </p>
         </Reveal>
       </section>
 

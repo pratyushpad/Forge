@@ -1,7 +1,8 @@
-# Forge — GRPO reasoning-RL. Targets grow phase by phase.
+# Forge: GRPO reasoning-RL. Targets grow phase by phase.
 # PYTHONPATH is overridden to repo root only: the host shell exports ROS2 py3.12
 # paths that would otherwise shadow into the py3.11 forge env.
-PY := PYTHONPATH=. $(HOME)/miniconda3/envs/forge/bin/python
+FORGE_PY ?= $(HOME)/miniconda3/envs/forge/bin/python
+PY := PYTHONPATH=. $(FORGE_PY)
 
 .PHONY: test data-stats smoke-train full-train eval export quantize \
 	serve-vllm serve-ollama bench

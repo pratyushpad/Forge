@@ -1,4 +1,7 @@
 import type { MetadataRoute } from "next";
+import { SITE_URL } from "../lib/site";
+
+export const dynamic = "force-static";
 
 export default function robots(): MetadataRoute.Robots {
   return {
@@ -8,6 +11,6 @@ export default function robots(): MetadataRoute.Robots {
       // The proxy spins a billed GPU; there is nothing here for a crawler to index.
       disallow: "/api/",
     },
-    sitemap: "https://forge-grpo.vercel.app/sitemap.xml",
+    sitemap: `${SITE_URL}/sitemap.xml`,
   };
 }

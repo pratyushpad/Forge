@@ -1,6 +1,8 @@
 import { ImageResponse } from "next/og";
 
-// Social card. Every number here is a measured value from HANDOFF.md.
+export const dynamic = "force-static";
+
+// Social card. Every number here is a measured value from MODEL_CARD.md.
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 export const alt = "Forge: GSM8K pass@1 58.8% to 70.0% from GRPO alone on an 8 GB GPU";
@@ -107,7 +109,7 @@ export default async function OgImage() {
             </div>
           </div>
           <div style={{ display: "flex", marginLeft: "auto", color: "#5A6A5E", fontSize: 24 }}>
-            RL alone · 86 min · 3.64 GiB VRAM
+            RL alone · 4 verifiable rewards · n=1,319
           </div>
         </div>
       </div>

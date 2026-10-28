@@ -1,10 +1,10 @@
-# Forge live endpoint — Modal deploy (run tomorrow)
+# Forge live endpoint: Modal deploy
 
 Goal: put the base + GRPO-tuned model on a **free, scale-to-zero Modal GPU** so the
-demo can do live inference. Idle cost = **$0**. You already signed up at modal.com.
+demo can do live inference. Idle cost = **$0**. Requires a modal.com account.
 
 Everything here is a couple of copy-paste commands. Run them from the repo root
-(`~/forge`) in the `forge` conda env. The app itself is `serve/modal_app.py`.
+(the directory you cloned Forge into) in the `forge` conda env. The app itself is `serve/modal_app.py`.
 
 ---
 
@@ -24,10 +24,10 @@ Modal's free credits depend on the tier:
 With a card, there IS a paid path ("when usage reaches $40, you'll be charged $10").
 To keep the $30 runway AND guarantee $0 real spend: dashboard → **Settings →
 Usage & Billing → Overview → "Set a budget"**, enter **`30`** (= the free credits) or
-lower (e.g. `5` for a tighter margin). Apps hard-stop when usage hits the budget —
+lower (e.g. `5` for a tighter margin). Apps hard-stop when usage hits the budget,
 which is at/below the free credits, before any charge triggers. Scale-to-zero means a
 demo only burns credits during the seconds a request runs (cents/month), so even $5 is
-plenty. **Do not remove the card to save money — that drops you back to $1/month.**
+plenty. **Do not remove the card to save money; that drops you back to $1/month.**
 
 ## 2. Create the API key Secret (the bearer token the proxy sends upstream)
 
@@ -40,7 +40,7 @@ modal secret create forge-api FORGE_API_KEY=<your-long-random-string>
 
 ## 3. Upload just the 73MB LoRA adapter to a Modal Volume
 
-`outputs/full/` also holds 8 checkpoints — do NOT upload all of it. Copy only the
+`outputs/full/` also holds 8 checkpoints; do NOT upload all of it. Copy only the
 two adapter files, then push them to `/grpo` in the volume:
 
 ```bash
@@ -94,7 +94,7 @@ name. Fix by editing `/tmp/forge-adapter/adapter_config.json` so
 ## 6. Point the demo at it (Vercel env vars)
 
 ```bash
-cd ~/forge
+# from the repo root, like every command in this guide
 vercel env add FORGE_FALLBACK_URL production   # paste the URL WITH /v1
 vercel env add FORGE_FALLBACK_KEY production    # the same random string as the Secret
 vercel env add FORGE_FALLBACK_MODEL production  # value: tuned
@@ -115,4 +115,4 @@ playground call `/api/generate` twice (once per model). Details in `forge_handof
   `container_idle_timeout` in `modal_app.py`.
 - **OOM on T4** → set `GPU = "L4"` (24GB) in `modal_app.py`, or lower `MAX_MODEL_LEN`.
 - **Cold start too slow for the UI** → keep one container warm with
-  `min_containers=1` (costs credits continuously — only for a demo/interview window).
+  `min_containers=1` (costs credits continuously; only for a demo/interview window).

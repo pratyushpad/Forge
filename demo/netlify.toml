@@ -1,0 +1,23 @@
+# Static mirror of the demo. Netlify base directory: demo
+# The live proxy (app/api) cannot exist in a static export, so it is removed in the
+# build container only; the repo and the Vercel build keep it.
+[build]
+  command = "rm -rf app/api && npm run build"
+  publish = "out"
+
+[build.environment]
+  NEXT_PUBLIC_STATIC_EXPORT = "1"
+  NEXT_TELEMETRY_DISABLED = "1"
+  # Set NEXT_PUBLIC_SITE_URL in the Netlify UI to the final site URL.
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "DENY"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+[[headers]]
+  for = "/opengraph-image"
+  [headers.values]
+    Content-Type = "image/png"

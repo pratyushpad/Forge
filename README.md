@@ -25,19 +25,16 @@ container before tokens start.
 | [`/results`](https://forge-grpo.vercel.app/results) | every figure with the committed file it came from |
 | [`/traces`](https://forge-grpo.vercel.app/traces) | full reasoning traces, including the problem both models miss |
 
-> **RL across domains.** This is the LLM half of a pair: **PPO** for robotic
-> manipulation (99% target-reach, TCS Medical Robotics) and **GRPO** for LLM
-> reasoning (here). Same reinforcement-learning backbone, two very different
-> action spaces: continuous robot control and discrete token generation.
-
 ## 10-second results (all measured, seed 3407)
 
 | | base | Forge (GRPO) |
 |---|---|---|
 | **GSM8K pass@1** (1,319 held-out) | 58.8% | **70.0%** |
-| ARC-Challenge (forgetting check) | 69.5% | 68.5% |
+| ARC-Challenge (forgetting check, first 200 test items) | 69.5% | 68.5% |
 
-Trained in **86 min**, **3.64 GiB peak VRAM**. Reward went from **1.23 to 2.80** out of 3.25.
+Trained in **86 min**, **3.64 GiB peak VRAM**. Reward went from **1.23 to 2.80** out of 3.25. (Training-run figures are from the training log on the
+training machine, which is not committed; the plot is [`docs/reward_curve.png`](docs/reward_curve.png).
+Eval numbers are committed as JSON under [`eval/results/`](eval/results/).)
 
 ![reward curve](docs/reward_curve.png)
 
@@ -116,7 +113,7 @@ torch 2.10+cu128 (Blackwell sm_120) · Python 3.11.
 ```bash
 # env: conda create -n forge python=3.11; pip install torch --index-url .../cu128
 #      pip install unsloth vllm trl datasets transformers accelerate bitsandbytes
-make test            # reward-function unit tests
+make test            # reward-function unit tests (CPU only: make test FORGE_PY=python)
 make full-train      # GRPO, 750 steps x 8 gens  (~86 min, 3.64 GiB)
 make eval            # base vs tuned pass@1 + ARC forgetting check
 make export          # merge -> GGUF f16 + Q4_K_M

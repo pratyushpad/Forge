@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { IS_STATIC } from "../../lib/site";
 import examplesData from "../../public/examples.json";
 import {
   answersMatch,
@@ -30,6 +31,8 @@ function describeError(err: unknown): string {
   if (err instanceof StreamError) {
     if (err.status === 429) return "Rate limit reached. Wait a minute and try again.";
     if (err.status === 503) return "No live endpoint is configured for this deployment.";
+    if (IS_STATIC || err.status === 404 || err.status === 405)
+      return "Live GPU inference is paused on this site. Pick one of the six recorded problems below to replay real outputs from both models.";
     return err.message;
   }
   return "The live endpoint could not be reached.";
@@ -114,7 +117,9 @@ export default function Playground() {
       if (!ac.signal.aborted) {
         if (fallbacks.length) {
           setBanner(
-            "The GPU endpoint didn't answer, so this problem fell back to the recorded run. Try again in a moment; it scales to zero and may still be waking.",
+            IS_STATIC
+              ? "Replaying the recorded run for this problem: real outputs from both models, generated offline through Ollama (Q4_K_M)."
+              : "The GPU endpoint didn't answer, so this problem fell back to the recorded run. Try again in a moment; it scales to zero and may still be waking.",
           );
         }
         setRunning(false);
@@ -182,9 +187,9 @@ export default function Playground() {
           </>
         </HeadlineReveal>
         <p className="pg-lede">
-          Every request below hits a real GPU: base Qwen2.5-1.5B-Instruct and the GRPO-tuned
-          adapter, served side by side from one vLLM process with multi-LoRA. Same prompt, same
-          greedy decoding, same one-shot example the model was trained and evaluated with.
+          {IS_STATIC
+            ? "Live GPU inference is paused on this host, so the six graded problems below replay outputs recorded from both models (Ollama, Q4_K_M). When the GPU endpoint is up, each request runs base Qwen2.5-1.5B-Instruct and the GRPO-tuned adapter side by side from one vLLM process with multi-LoRA."
+            : "Every request below hits a real GPU: base Qwen2.5-1.5B-Instruct and the GRPO-tuned adapter, served side by side from one vLLM process with multi-LoRA. Same prompt, same greedy decoding, same one-shot example the model was trained and evaluated with."}
         </p>
       </section>
 
@@ -249,7 +254,7 @@ export default function Playground() {
       </section>
 
       <section ref={sideRef}>
-        <ForgeSecLabel num="01" label="Side by side, live" />
+        <ForgeSecLabel num="01" label={IS_STATIC ? "Side by side" : "Side by side, live"} />
         <div className="grid">
           <ModelColumn kind="base" phase={base.phase} raw={base.raw} gold={gold} note={base.note} />
           <ModelColumn

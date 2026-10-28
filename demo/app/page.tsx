@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState, type CSSProperties, type RefObject } from "react";
+import { IS_STATIC } from "../lib/site";
 import examplesData from "../public/examples.json";
 import { gsap, useGSAP } from "../lib/gsap";
 import { gsapEaseOut, prefersReducedMotion, replayDuration } from "../lib/motion";
@@ -224,7 +225,7 @@ export default function Home() {
             </p>
             <div className="hero-actions enter" style={enter(320)}>
               <Link className="hero-cta primary" href="/playground">
-                Run it live
+                {IS_STATIC ? "Try the playground" : "Run it live"}
               </Link>
               <Link className="hero-cta ghost" href="/method">
                 How it works
@@ -252,7 +253,7 @@ export default function Home() {
               </span>
             </div>
             <p className="hero-graph-caption">
-              750 steps, 86 minutes. Full curve and every training figure on{" "}
+              750 steps x 8 generations. Full curve and every training figure on{" "}
               <Link href="/results">Results</Link>.
             </p>
           </div>
@@ -277,12 +278,9 @@ export default function Home() {
             </div>
           </div>
           <div className="stat enter" style={enter(460)}>
-            <div className="k">Train time</div>
+            <div className="k">Rewards</div>
             <div className="v">
-              <CountUp value={86} suffix=" min" />{" "}
-              <small>
-                <CountUp value={3.64} decimals={2} suffix=" GiB" />
-              </small>
+              <CountUp value={4} /> <small>verifiable</small>
             </div>
           </div>
           <div className="stat enter" style={enter(500)}>
@@ -322,9 +320,8 @@ export default function Home() {
           ))}
         </div>
         <div className="mode">
-          Replaying <b>real cached outputs</b> from both models (generated offline so this page
-          always works). Point <code>FORGE_FALLBACK_URL</code> at a live endpoint for on-the-fly
-          inference.
+          Replaying <b>real cached outputs</b> from both models, recorded offline through Ollama
+          (Q4_K_M) so this page always works.
         </div>
       </section>
 
@@ -380,9 +377,11 @@ export default function Home() {
           <Link className="deep-card" href="/playground">
             <span className="deep-glow" aria-hidden="true" />
             <span className="deep-k">Playground</span>
-            <span className="deep-t">Run it yourself, live</span>
+            <span className="deep-t">{IS_STATIC ? "Run it yourself" : "Run it yourself, live"}</span>
             <span className="deep-d">
-              Type any problem. Both models answer side by side on a real GPU, streaming.
+              {IS_STATIC
+                ? "Replay both models side by side on six graded problems."
+                : "Type any problem. Both models answer side by side on a real GPU, streaming."}
             </span>
             {ARROW}
           </Link>
