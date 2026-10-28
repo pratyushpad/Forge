@@ -1,6 +1,10 @@
 import type { MetadataRoute } from "next";
 
-const BASE = "https://forge-grpo.vercel.app";
+import { SITE_URL } from "../lib/site";
+
+export const dynamic = "force-static";
+
+const BASE = SITE_URL;
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return ["", "/playground", "/method", "/results", "/traces"].map((path) => ({

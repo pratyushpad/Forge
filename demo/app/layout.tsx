@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import { SITE_URL } from "../lib/site";
 import { Playfair_Display, Source_Sans_3, JetBrains_Mono } from "next/font/google";
 import SiteNav from "./_components/SiteNav";
 import "./tokens.css";
@@ -28,7 +29,7 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://forge-grpo.vercel.app"),
+  metadataBase: new URL(SITE_URL),
   title: "Forge: GRPO reasoning, base vs tuned",
   description:
     "Qwen2.5-1.5B taught to reason with GRPO on an 8GB GPU. Compare the base model against the tuned model side by side on grade-school math.",
