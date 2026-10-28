@@ -117,7 +117,9 @@ export default function Playground() {
       if (!ac.signal.aborted) {
         if (fallbacks.length) {
           setBanner(
-            "The GPU endpoint didn't answer, so this problem fell back to the recorded run. Try again in a moment; it scales to zero and may still be waking.",
+            IS_STATIC
+              ? "Replaying the recorded run for this problem: real outputs from both models, generated offline through Ollama (Q4_K_M)."
+              : "The GPU endpoint didn't answer, so this problem fell back to the recorded run. Try again in a moment; it scales to zero and may still be waking.",
           );
         }
         setRunning(false);
@@ -252,7 +254,7 @@ export default function Playground() {
       </section>
 
       <section ref={sideRef}>
-        <ForgeSecLabel num="01" label="Side by side, live" />
+        <ForgeSecLabel num="01" label={IS_STATIC ? "Side by side" : "Side by side, live"} />
         <div className="grid">
           <ModelColumn kind="base" phase={base.phase} raw={base.raw} gold={gold} note={base.note} />
           <ModelColumn
