@@ -109,7 +109,7 @@ export default async function OgImage() {
             </div>
           </div>
           <div style={{ display: "flex", marginLeft: "auto", color: "#5A6A5E", fontSize: 24 }}>
-            RL alone · 86 min · 3.64 GiB VRAM
+            RL alone · 4 verifiable rewards · n=1,319
           </div>
         </div>
       </div>

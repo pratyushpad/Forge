@@ -253,7 +253,7 @@ export default function Home() {
               </span>
             </div>
             <p className="hero-graph-caption">
-              750 steps, 86 minutes. Full curve and every training figure on{" "}
+              750 steps x 8 generations. Full curve and every training figure on{" "}
               <Link href="/results">Results</Link>.
             </p>
           </div>
@@ -278,12 +278,9 @@ export default function Home() {
             </div>
           </div>
           <div className="stat enter" style={enter(460)}>
-            <div className="k">Train time</div>
+            <div className="k">Rewards</div>
             <div className="v">
-              <CountUp value={86} suffix=" min" />{" "}
-              <small>
-                <CountUp value={3.64} decimals={2} suffix=" GiB" />
-              </small>
+              <CountUp value={4} /> <small>verifiable</small>
             </div>
           </div>
           <div className="stat enter" style={enter(500)}>

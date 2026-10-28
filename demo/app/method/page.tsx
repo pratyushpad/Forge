@@ -175,11 +175,11 @@ export default function Method() {
             </div>
             <div>
               <dt>Wall clock</dt>
-              <dd>86.2 min</dd>
+              <dd>86.2 min (training log, not committed)</dd>
             </div>
             <div>
               <dt>Peak VRAM</dt>
-              <dd>3.64 GiB of ~6.6 usable</dd>
+              <dd>3.64 GiB of ~6.6 usable (training log)</dd>
             </div>
             <div>
               <dt>Seed</dt>
