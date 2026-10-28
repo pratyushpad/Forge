@@ -25,11 +25,6 @@ container before tokens start.
 | [`/results`](https://forge-grpo.vercel.app/results) | every figure with the committed file it came from |
 | [`/traces`](https://forge-grpo.vercel.app/traces) | full reasoning traces, including the problem both models miss |
 
-> **RL across domains.** This is the LLM half of a pair: **PPO** for robotic
-> manipulation (99% target-reach, TCS Medical Robotics) and **GRPO** for LLM
-> reasoning (here). Same reinforcement-learning backbone, two very different
-> action spaces: continuous robot control and discrete token generation.
-
 ## 10-second results (all measured, seed 3407)
 
 | | base | Forge (GRPO) |
