@@ -1,7 +1,7 @@
 # Serving Forge
 
 Two backends, one OpenAI-compatible contract, one provider-agnostic client that
-falls back automatically — so a demo keeps working when the training box is off.
+falls back automatically, so a demo keeps working when the training box is off.
 
 ## Backends
 
@@ -29,7 +29,7 @@ ollama serve            # OpenAI-compatible on :11434
 |---|---|---|---|
 | vLLM fp16 (GPU) | **19 ms** | **105 tok/s** | single stream; **674 tok/s** batched aggregate (100 concurrent) |
 | Ollama Q4_K_M (GPU) | 139 ms | **228 tok/s** | 29/29 layers offloaded to GPU (Ollama's CUDA v13 supports Blackwell sm_120) |
-| Q4_K_M (CPU only) | — | ~21 tok/s | llama.cpp, 16 threads (Phase 5) — the no-GPU fallback |
+| Q4_K_M (CPU only) | n/a | ~21 tok/s | llama.cpp, 16 threads (Phase 5), the no-GPU fallback |
 
 Why Q4/Ollama out-decodes fp16/vLLM single-stream: single-request decode is
 memory-bandwidth-bound, and the Q4 weights are ~4× smaller to stream per token.
@@ -38,8 +38,8 @@ which is what matters under concurrent load.
 
 ## Provider-agnostic client (the interface Phase 8 + Lumina consume)
 
-`serve/client.py` picks the first healthy provider in priority order —
-local vLLM → local Ollama → hosted fallback — and streams through a single
+`serve/client.py` picks the first healthy provider in priority order
+(local vLLM, then local Ollama, then hosted fallback) and streams through a single
 uniform interface:
 
 ```python
@@ -49,7 +49,7 @@ for tok in c.stream("What is 7 * 8?"):
     print(tok, end="", flush=True)
 ```
 
-**Hosted fallback** (demo works when the box is off) — point at any
+**Hosted fallback** (demo works when the box is off): point at any
 OpenAI-compatible host via env:
 ```bash
 export FORGE_FALLBACK_URL=https://<host>/v1
